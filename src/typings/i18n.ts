@@ -40,6 +40,20 @@ export interface AppMessages {
     searchHint: string;
     fullscreen: string;
     exitFullscreen: string;
+    contentFullscreen: string;
+    contentFullscreenExit: string;
+  };
+  tabs: {
+    label: string;
+    actions: string;
+    closeCurrent: string;
+    closeOthers: string;
+    closeLeft: string;
+    closeRight: string;
+    closeAll: string;
+    pin: string;
+    unpin: string;
+    close: string;
   };
   theme: {
     title: string;
@@ -48,7 +62,68 @@ export interface AppMessages {
     modeDark: string;
     modeSystem: string;
     primary: string;
+    tabMode: string;
+    tabModeChrome: string;
+    tabModeButton: string;
+    tabModeSlider: string;
     reset: string;
+    tabs: {
+      appearance: string;
+      layout: string;
+      general: string;
+      preset: string;
+    };
+    appearance: {
+      title: string;
+      radius: string;
+      grayscale: string;
+      colourWeakness: string;
+    };
+    layout: {
+      title: string;
+      tabVisible: string;
+      tabCache: string;
+      tabHeight: string;
+      tabStyle: string;
+      closeTabByMiddleClick: string;
+      headerTitle: string;
+      headerHeight: string;
+      breadcrumbVisible: string;
+      breadcrumbShowIcon: string;
+      siderTitle: string;
+      siderWidth: string;
+      siderCollapsedWidth: string;
+    };
+    general: {
+      title: string;
+      searchVisible: string;
+      localeVisible: string;
+      watermarkTitle: string;
+      watermarkVisible: string;
+      watermarkText: string;
+      watermarkUserName: string;
+      watermarkTime: string;
+      watermarkTimeFormat: string;
+    };
+    preset: {
+      title: string;
+      apply: string;
+      applied: string;
+      defaultName: string;
+      defaultDesc: string;
+      midnightName: string;
+      midnightDesc: string;
+      violetName: string;
+      violetDesc: string;
+      emeraldName: string;
+      emeraldDesc: string;
+    };
+    config: {
+      copy: string;
+      reset: string;
+      copySuccess: string;
+      resetSuccess: string;
+    };
   };
   locale: {
     label: string;

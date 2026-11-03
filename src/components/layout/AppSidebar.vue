@@ -8,9 +8,13 @@ interface Props {
   temporary?: boolean;
   /** Collapsed rail showing icons only (desktop). */
   rail?: boolean;
+  /** Expanded drawer width in pixels. */
+  width?: number;
+  /** Rail width in pixels when the sidebar is collapsed. */
+  collapsedWidth?: number;
 }
 
-const { temporary = false, rail = false } = defineProps<Props>();
+const { temporary = false, rail = false, width = 264, collapsedWidth = 56 } = defineProps<Props>();
 
 /** Two-way binding owned by BaseLayout: `<AppSidebar v-model="drawer" />`. */
 const open = defineModel<boolean>({ required: true });
@@ -25,8 +29,9 @@ const navItems = useNavigation();
     :expand-on-hover="rail"
     :permanent="!temporary"
     :rail="rail"
+    :rail-width="collapsedWidth"
     :temporary="temporary"
-    width="264"
+    :width="width"
   >
     <template #prepend>
       <VList>

@@ -19,6 +19,7 @@ const { icon, tooltip = '' } = defineProps<Props>();
         :aria-label="tooltip === '' ? icon : tooltip"
         class="text-medium-emphasis"
         :icon="icon"
+        rounded="lg"
         size="small"
         variant="text"
       />

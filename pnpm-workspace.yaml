@@ -1,0 +1,4 @@
+# pnpm 11 requires an explicit decision for dependencies that ship install scripts.
+# @parcel/watcher only needs it for an optional native watcher; the JS fallback is used instead.
+allowBuilds:
+  '@parcel/watcher': false

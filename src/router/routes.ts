@@ -29,7 +29,7 @@ export const routes: RouteRecordRaw[] = [
         path: 'home',
         name: 'home',
         component: () => import('@/views/index.vue'),
-        meta: { titleKey: 'nav.home', icon: 'mdi-home-outline', nav: true },
+        meta: { titleKey: 'nav.home', icon: 'mdi-home-outline', nav: true, home: true },
       },
       {
         path: 'fruits',

@@ -1,74 +1,226 @@
-import type { ThemeMode } from '@/typings/theme';
+import type {
+  AppearanceSettings,
+  BreadcrumbSettings,
+  HeaderSettings,
+  TabMode,
+  TabSettings,
+  ThemeMode,
+  ThemeSettingsPatch,
+  WatermarkSettings,
+} from '@/typings/theme';
 
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useTheme } from 'vuetify';
 
 import {
-  DEFAULT_PRIMARY_COLOR,
+  DEFAULT_APPEARANCE_SETTINGS,
   DEFAULT_THEME_MODE,
   readAppearanceSettings,
   THEME_MODES,
   writeAppearanceSettings,
 } from '@/theme/appearance';
 
+/** Partial header settings, with the nested breadcrumb patchable on its own. */
+type HeaderSettingsPatch = Partial<Omit<HeaderSettings, 'breadcrumb'>> & {
+  readonly breadcrumb?: Partial<BreadcrumbSettings>;
+};
+
+/** Deep-merge a settings patch into a base settings object. */
+function mergeSettings(base: AppearanceSettings, patch: ThemeSettingsPatch): AppearanceSettings {
+  return {
+    mode: patch.mode ?? base.mode,
+    primary: patch.primary ?? base.primary,
+    radius: patch.radius ?? base.radius,
+    grayscale: patch.grayscale ?? base.grayscale,
+    colourWeakness: patch.colourWeakness ?? base.colourWeakness,
+    tab: { ...base.tab, ...patch.tab },
+    header: {
+      ...base.header,
+      ...patch.header,
+      breadcrumb: { ...base.header.breadcrumb, ...patch.header?.breadcrumb },
+    },
+    sider: { ...base.sider, ...patch.sider },
+    watermark: { ...base.watermark, ...patch.watermark },
+  };
+}
+
 /**
- * Appearance settings: theme mode (light / dark / system) and primary color.
+ * Appearance settings: theme mode, primary color, radius, auxiliary color modes and
+ * the shell settings (tab bar, header, sidebar, watermark).
  *
  * The Vuetify theme instance stays the single renderer: mutating it here updates
  * every component (and the UnoCSS `bg-primary` utilities) at once. Settings are
- * persisted in localStorage and applied when the store is created in App.vue,
- * i.e. before the shell renders. Each action applies its change explicitly, so the
- * store has no implicit side effects.
+ * persisted in localStorage and applied when the store is created in App.vue, i.e.
+ * before the shell renders. Each action applies its change explicitly, so the store
+ * has no implicit side effects.
  */
 export const useThemeStore = defineStore('theme', () => {
   const theme = useTheme();
-  const stored = readAppearanceSettings();
 
-  const mode = ref<ThemeMode>(stored.mode);
-  const primary = ref(stored.primary);
+  const settings = ref<AppearanceSettings>(readAppearanceSettings());
 
-  function applyMode(value: ThemeMode) {
-    void theme.change(value);
+  const mode = computed(() => settings.value.mode);
+  const primary = computed(() => settings.value.primary);
+  const radius = computed(() => settings.value.radius);
+  const grayscale = computed(() => settings.value.grayscale);
+  const colourWeakness = computed(() => settings.value.colourWeakness);
+  const tab = computed(() => settings.value.tab);
+  const tabMode = computed(() => settings.value.tab.mode);
+  const header = computed(() => settings.value.header);
+  const sider = computed(() => settings.value.sider);
+  const watermark = computed(() => settings.value.watermark);
+
+  /** Pretty JSON of the current settings, used by the "copy config" action. */
+  const settingsJson = computed(() => JSON.stringify(settings.value, null, 2));
+
+  function applyMode() {
+    void theme.change(settings.value.mode);
   }
 
-  function applyPrimary(color: string) {
+  function applyColors() {
     for (const definition of Object.values(theme.themes.value)) {
-      definition.colors.primary = color;
+      definition.colors.primary = settings.value.primary;
     }
   }
 
+  /** The radius lives in Vuetify's theme variables, so both themes are updated. */
+  function applyRadius() {
+    for (const definition of Object.values(theme.themes.value)) {
+      definition.variables['border-radius-root'] = `${settings.value.radius}px`;
+    }
+  }
+
+  function applyAuxiliaryModes() {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.documentElement.style.filter = [
+      settings.value.grayscale ? 'grayscale(100%)' : '',
+      settings.value.colourWeakness ? 'invert(80%)' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  function applyAll() {
+    applyMode();
+    applyColors();
+    applyRadius();
+    applyAuxiliaryModes();
+  }
+
   function persist() {
-    writeAppearanceSettings({ mode: mode.value, primary: primary.value });
+    writeAppearanceSettings(settings.value);
+  }
+
+  /** Replace the settings, apply them to Vuetify and persist. */
+  function update(next: AppearanceSettings) {
+    settings.value = next;
+    applyAll();
+    persist();
   }
 
   function setMode(value: ThemeMode) {
-    mode.value = value;
-    applyMode(value);
-    persist();
+    update({ ...settings.value, mode: value });
   }
 
   function setPrimary(value: string) {
-    primary.value = value;
-    applyPrimary(value);
-    persist();
+    update({ ...settings.value, primary: value });
+  }
+
+  function setRadius(value: number) {
+    update({ ...settings.value, radius: value });
+  }
+
+  function setGrayscale(value: boolean) {
+    update({ ...settings.value, grayscale: value });
+  }
+
+  function setColourWeakness(value: boolean) {
+    update({ ...settings.value, colourWeakness: value });
+  }
+
+  function setTabMode(value: TabMode) {
+    update({ ...settings.value, tab: { ...settings.value.tab, mode: value } });
+  }
+
+  function updateTabSettings(patch: Partial<TabSettings>) {
+    update({ ...settings.value, tab: { ...settings.value.tab, ...patch } });
+  }
+
+  function updateHeaderSettings(patch: HeaderSettingsPatch) {
+    update({
+      ...settings.value,
+      header: {
+        ...settings.value.header,
+        ...patch,
+        breadcrumb: {
+          visible: patch.breadcrumb?.visible ?? settings.value.header.breadcrumb.visible,
+          showIcon: patch.breadcrumb?.showIcon ?? settings.value.header.breadcrumb.showIcon,
+        },
+      },
+    });
+  }
+
+  function updateBreadcrumbSettings(patch: Partial<BreadcrumbSettings>) {
+    updateHeaderSettings({ breadcrumb: patch });
+  }
+
+  function updateSiderSettings(patch: Partial<AppearanceSettings['sider']>) {
+    update({ ...settings.value, sider: { ...settings.value.sider, ...patch } });
+  }
+
+  function updateWatermarkSettings(patch: Partial<WatermarkSettings>) {
+    update({ ...settings.value, watermark: { ...settings.value.watermark, ...patch } });
+  }
+
+  /** Apply a partial settings patch (theme presets). */
+  function applySettings(patch: ThemeSettingsPatch) {
+    update(mergeSettings(settings.value, patch));
   }
 
   /** Cycle light → dark → system (used by the app-bar theme toggle). */
   function cycleMode() {
-    const index = THEME_MODES.indexOf(mode.value);
+    const index = THEME_MODES.indexOf(settings.value.mode);
     setMode(THEME_MODES[(index + 1) % THEME_MODES.length] ?? DEFAULT_THEME_MODE);
   }
 
-  /** Back to the defaults (Vuetify's system theme + default primary). */
+  /** Back to the defaults. */
   function reset() {
-    setMode(DEFAULT_THEME_MODE);
-    setPrimary(DEFAULT_PRIMARY_COLOR);
+    update(mergeSettings(DEFAULT_APPEARANCE_SETTINGS, {}));
   }
 
   // Apply the persisted settings when the store is created (App.vue, before render).
-  applyMode(mode.value);
-  applyPrimary(primary.value);
+  applyAll();
 
-  return { mode, primary, setMode, setPrimary, cycleMode, reset };
+  return {
+    settings,
+    settingsJson,
+    mode,
+    primary,
+    radius,
+    grayscale,
+    colourWeakness,
+    tab,
+    tabMode,
+    header,
+    sider,
+    watermark,
+    setMode,
+    setPrimary,
+    setRadius,
+    setGrayscale,
+    setColourWeakness,
+    setTabMode,
+    updateTabSettings,
+    updateHeaderSettings,
+    updateBreadcrumbSettings,
+    updateSiderSettings,
+    updateWatermarkSettings,
+    applySettings,
+    cycleMode,
+    reset,
+  };
 });

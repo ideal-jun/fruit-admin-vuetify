@@ -16,6 +16,8 @@ declare module 'vue-router' {
     icon?: string;
     /** Include this route in the sidebar navigation. */
     nav?: boolean;
+    /** Mark the shell's landing route: its tab is the retained home tab. */
+    home?: boolean;
   }
 }
 

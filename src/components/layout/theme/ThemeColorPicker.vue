@@ -11,8 +11,8 @@ const themeStore = useThemeStore();
 <template>
   <section>
     <div class="mb-2 flex items-center justify-between">
-      <span class="text-label-large opacity-80">{{ t('theme.primary') }}</span>
-      <span class="text-label-small opacity-60">{{ themeStore.primary }}</span>
+      <span class="text-label-large text-medium-emphasis">{{ t('theme.primary') }}</span>
+      <span class="text-label-small text-medium-emphasis">{{ themeStore.primary }}</span>
     </div>
 
     <div class="flex flex-wrap gap-2">
@@ -36,15 +36,5 @@ const themeStore = useThemeStore();
         />
       </button>
     </div>
-
-    <VBtn
-      class="mt-3"
-      prepend-icon="mdi-restore"
-      size="small"
-      variant="text"
-      @click="themeStore.reset()"
-    >
-      {{ t('theme.reset') }}
-    </VBtn>
   </section>
 </template>

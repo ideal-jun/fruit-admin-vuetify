@@ -31,7 +31,7 @@ function onModeChange(value: unknown) {
 
 <template>
   <section>
-    <div class="mb-2 text-label-large opacity-80">{{ t('theme.mode') }}</div>
+    <div class="mb-2 text-label-large text-medium-emphasis">{{ t('theme.mode') }}</div>
 
     <VTabs
       density="compact"
