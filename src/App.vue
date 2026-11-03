@@ -1,20 +1,25 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n';
+import { watchEffect } from 'vue';
 
-import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
+import { usePageTitle } from '@/composables/usePageTitle';
+import { useThemeStore } from '@/stores/theme';
 
-const { t } = useI18n({ useScope: 'global' });
+// Creating the store applies the persisted appearance settings (theme mode + primary
+// color) before the shell renders, so there is no flash of the default theme.
+useThemeStore();
+
+const { documentTitle } = usePageTitle();
+
+// Route-aware document title (the i18n plugin only owns <html lang>).
+watchEffect(() => {
+  if (typeof document !== 'undefined') {
+    document.title = documentTitle.value;
+  }
+});
 </script>
 
 <template>
   <VApp>
-    <VAppBar class="px-2" flat>
-      <VAppBarTitle>{{ t('app.name') }}</VAppBarTitle>
-      <VSpacer />
-      <LocaleSwitcher />
-    </VAppBar>
-    <VMain>
-      <RouterView />
-    </VMain>
+    <RouterView />
   </VApp>
 </template>

@@ -5,7 +5,6 @@
 // uno.config.ts is what makes v-card / v-avatar / v-select … paint the same Tailwind
 // shadows as the `elevation-*` and `shadow-*` utilities. Remove them and components fall
 // back to Material shadows built from `--v-shadow-color`, i.e. the mismatch comes back.
-$elevation-flat-layer: 0 0 #0000;
 
 @use 'vuetify/settings' with (
   $color-pack: false,
@@ -13,26 +12,6 @@ $elevation-flat-layer: 0 0 #0000;
 
   $heading-font-family: var(--font-heading),
   $body-font-family: var(--font-body),
-
-  // Elevation level → Tailwind shadow token (same mapping as uno.config.ts).
-  $shadow-key: (
-    0: $elevation-flat-layer,
-    1: var(--shadow-xs),
-    2: var(--shadow-sm),
-    3: var(--shadow-md),
-    4: var(--shadow-xl),
-    5: var(--shadow-2xl),
-  ),
-  // Neutralise the ambient layer: Tailwind shadows are single-layer, and the mixin
-  // always emits `<key>, <ambient>`, so the second layer must be a no-op.
-  $shadow-ambient: (
-    0: $elevation-flat-layer,
-    1: $elevation-flat-layer,
-    2: $elevation-flat-layer,
-    3: $elevation-flat-layer,
-    4: $elevation-flat-layer,
-    5: $elevation-flat-layer,
-  ),
 
   $grid-breakpoints: (
     'xs': 0,

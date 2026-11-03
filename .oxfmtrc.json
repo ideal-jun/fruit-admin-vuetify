@@ -32,6 +32,9 @@
     "node_modules/**",
     "coverage/**",
     "pnpm-lock.yaml",
-    "public/layers.css"
+    "public/layers.css",
+    // Vendored agent skills (npx skills add): third-party content, never reformatted.
+    ".agents/**",
+    ".dsh/**"
   ]
 }

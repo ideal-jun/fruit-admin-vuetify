@@ -39,6 +39,20 @@ const elevationShadows = [
   ...ELEVATION_SHADOW_TOKENS.map((token) => `var(--shadow-${token})`),
 ];
 
+// Vuetify's emphasis text utilities are disabled together with its other utilities
+// (`$utilities: false` in src/styles/settings.scss), so they are re-created here with the
+// same formula Vuetify 4 ships: the theme's `on-background` color at the per-theme opacity.
+// Unlike Tailwind's `opacity-*`, color-mix() fades only the text color, not the children.
+const EMPHASIS_OPACITY_VARS = {
+  'high-emphasis': '--v-high-emphasis-opacity',
+  'medium-emphasis': '--v-medium-emphasis-opacity',
+  disabled: '--v-disabled-opacity',
+} as const;
+
+function emphasisColor(opacityVar: string): string {
+  return `color-mix(in srgb, rgb(var(--v-theme-on-background)) calc(var(${opacityVar}) * 100%), transparent)`;
+}
+
 // Publishes those tokens as `--shadow-*` custom properties. Values are resolved at
 // generation time, so the CSS stays in sync with whatever presetWind4 (or this config)
 // puts in `theme.shadow` — nothing is hard-coded here except the token names.
@@ -118,9 +132,15 @@ export default defineConfig({
     },
     colors: themeColors,
   },
-  rules: elevationShadows.map(
-    (shadow, level) => [`elevation-${level}`, { 'box-shadow': shadow }] satisfies StaticRule,
-  ),
+  rules: [
+    ...elevationShadows.map(
+      (shadow, level) => [`elevation-${level}`, { 'box-shadow': shadow }] satisfies StaticRule,
+    ),
+    ...Object.entries(EMPHASIS_OPACITY_VARS).map(
+      ([name, opacityVar]) =>
+        [`text-${name}`, { color: emphasisColor(opacityVar) }] satisfies StaticRule,
+    ),
+  ],
   shortcuts: {
     // MD3 typography (Vuetify's default typography scale)
     'text-display-large':

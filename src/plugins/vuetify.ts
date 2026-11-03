@@ -5,6 +5,8 @@
  */
 
 // Composables
+// vue-i18n's `useI18n` is required *by the adapter*; app code uses Vuetify's `useLocale()`
+// (which the adapter backs with this same vue-i18n instance).
 import { useI18n } from 'vue-i18n';
 import { createVuetify } from 'vuetify';
 import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';

@@ -3,9 +3,9 @@ import type { AppMessages } from './i18n';
 /**
  * Registers the app's message schema with vue-i18n.
  *
- * Effect: `useI18n().t` and `i18n.global.t` get **key autocomplete and typed
- * `JsonPaths`** for our messages (`app.name`, `demo.currentLocale`, …), and any locale
- * file is validated against `AppMessages`, so a missing key is a compile error.
+ * Effect: `i18n.global.t` (the API behind Vuetify's `useLocale().t` adapter) gets
+ * **key autocomplete and typed `JsonPaths`** for our messages, and any locale file is
+ * validated against `AppMessages`, so a missing key is a compile error.
  *
  * Note: vue-i18n intentionally accepts arbitrary strings in `t()` (`Key extends string`)
  * to support dynamic keys, so a typo is not a hard error — the type system catches

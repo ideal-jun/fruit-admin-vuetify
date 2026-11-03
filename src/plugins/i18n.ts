@@ -33,15 +33,14 @@ const i18n = createI18n({
   messages,
 });
 
-// Keep <html lang>, document.title and the saved preference in sync with the
-// active locale, no matter whether the change comes from the app or from
-// Vuetify's useLocale().
+// Keep <html lang> and the saved preference in sync with the active locale, no
+// matter whether the change comes from the app or from Vuetify's useLocale().
+// `document.title` is route aware and therefore handled in App.vue.
 watch(
   i18n.global.locale,
   (locale) => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = locale;
-      document.title = i18n.global.t('app.name');
     }
     try {
       localStorage.setItem(LOCALE_STORAGE_KEY, locale);

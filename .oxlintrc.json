@@ -48,5 +48,13 @@
     "vue/no-deprecated-data-object-declaration": "error",
     "vue/require-render-return": "error"
   },
+  "overrides": [
+    {
+      "files": ["src/typings/**/*.d.ts"],
+      // `export {}` is the canonical way to keep a .d.ts a module, which is required for
+      // `declare module '...'` to augment instead of replace the target module.
+      "rules": { "unicorn/require-module-specifiers": "off" }
+    }
+  ],
   "ignorePatterns": ["dist", "node_modules", "coverage", "public"]
 }

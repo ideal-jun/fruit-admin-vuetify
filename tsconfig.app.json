@@ -15,7 +15,10 @@
     "noFallthroughCasesInSwitch": true,
 
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      // Type-only override that re-types Vuetify's `useLocale().t` with our message keys.
+      // Vite does not read tsconfig paths, so the runtime import stays the real package.
+      "vuetify": ["./src/typings/vuetify.d.ts"]
     }
   }
 }

@@ -1,27 +1,26 @@
 import type { AppLocale } from '@/typings/i18n';
 
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useLocale } from 'vuetify';
 
 import { DEFAULT_LOCALE, isAppLocale, SUPPORTED_LOCALES } from '@/locales';
 
 /**
- * App-level locale helper.
+ * App-level locale helper built on Vuetify's `useLocale()` — the same locale that drives
+ * every Vuetify component through `createVueI18nAdapter`.
  *
- * Reads and writes the global vue-i18n locale. Persisting the choice and
- * syncing `<html lang>` / `document.title` is done once in src/plugins/i18n.ts,
- * so every caller — app code as well as Vuetify's own `useLocale()` — stays in
- * sync automatically.
+ * Persisting the choice and syncing `<html lang>` is done once in src/plugins/i18n.ts,
+ * which watches the vue-i18n locale exposed by the adapter.
  */
 export function useAppLocale() {
-  const { locale } = useI18n({ useScope: 'global' });
+  const { current } = useLocale();
 
   const currentLocale = computed<AppLocale>(() =>
-    isAppLocale(locale.value) ? locale.value : DEFAULT_LOCALE,
+    isAppLocale(current.value) ? current.value : DEFAULT_LOCALE,
   );
 
   function setLocale(next: AppLocale) {
-    locale.value = next;
+    current.value = next;
   }
 
   return {

@@ -20,7 +20,9 @@
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "fix": "run-s lint:fix fmt",
-    "check": "run-p type-check type-coverage lint fmt:check"
+    "check": "run-p type-check type-coverage lint fmt:check",
+    "skills:list": "npx --yes skills@latest ls",
+    "skills:update": "npx --yes skills@latest update -y"
   },
   "dependencies": {
     "@fontsource/roboto": "^5.2.10",

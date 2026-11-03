@@ -20,6 +20,36 @@ export interface AppMessages {
     name: string;
     tagline: string;
   };
+  nav: {
+    menu: string;
+    home: string;
+    fruits: string;
+  };
+  layout: {
+    toggleTheme: string;
+    signIn: string;
+    signOut: string;
+    signedInAs: string;
+    openMenu: string;
+    expandSidebar: string;
+    collapseSidebar: string;
+    search: string;
+    searchPlaceholder: string;
+    searchEmpty: string;
+    searchPrompt: string;
+    searchHint: string;
+    fullscreen: string;
+    exitFullscreen: string;
+  };
+  theme: {
+    title: string;
+    mode: string;
+    modeLight: string;
+    modeDark: string;
+    modeSystem: string;
+    primary: string;
+    reset: string;
+  };
   locale: {
     label: string;
     zhHans: string;
@@ -30,5 +60,25 @@ export interface AppMessages {
     description: string;
     selectLabel: string;
     currentLocale: string;
+  };
+  views: {
+    login: {
+      title: string;
+      subtitle: string;
+      username: string;
+      password: string;
+      submit: string;
+      hint: string;
+    };
+    fruits: {
+      title: string;
+      name: string;
+      price: string;
+      items: {
+        apple: string;
+        banana: string;
+        orange: string;
+      };
+    };
   };
 }

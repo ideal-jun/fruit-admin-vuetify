@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "skills": {
+    "vue-ai-apps": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-ai-apps/SKILL.md",
+      "computedHash": "529559f04a3d84d00af296169bb96ad67b3a19e13150fa6db356dff16d179860",
+      "installMode": "copy"
+    },
+    "vue-best-practices": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-best-practices/SKILL.md",
+      "computedHash": "25a2524cc683f2939fc5bd0c78110207cbe5e8e3f6b88cae8f45e80da288fa8b",
+      "installMode": "copy"
+    },
+    "vue-debug-guides": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-debug-guides/SKILL.md",
+      "computedHash": "cfdad9b7e75cb6f686a62fb4ec3c63db445a07ddda48c80259df358a6655a701",
+      "installMode": "copy"
+    },
+    "vue-jsx-best-practices": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-jsx-best-practices/SKILL.md",
+      "computedHash": "6e5b3020f0d12fc6ab2750b1ae7b60a6d283c91947191c8928880ea8d9019f37",
+      "installMode": "copy"
+    },
+    "vue-options-api-best-practices": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-options-api-best-practices/SKILL.md",
+      "computedHash": "02cea725fc117620df8f234a4c5702641023015ee372579cc62110827d633657",
+      "installMode": "copy"
+    },
+    "vue-pinia-best-practices": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-pinia-best-practices/SKILL.md",
+      "computedHash": "071c7daa6f6b5c7016c180170fbc5f5f370bf60e3ba19d2cbbb902a3f577eba6",
+      "installMode": "copy"
+    },
+    "vue-router-best-practices": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-router-best-practices/SKILL.md",
+      "computedHash": "002beb1083dec5b1f61433c4bdb9e1c455d38ef15b4f5585fc7de341b6c1db0a",
+      "installMode": "copy"
+    },
+    "vue-testing-best-practices": {
+      "source": "PyModel/vue3-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/vue-testing-best-practices/SKILL.md",
+      "computedHash": "41fe9682f07e1432004d3730098edf43341218640f8abd94cb5d3078366c8cda",
+      "installMode": "copy"
+    }
+  }
+}
