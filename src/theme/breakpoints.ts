@@ -1,4 +1,4 @@
-import type { DisplayThresholds } from 'vuetify'
+import type { DisplayThresholds } from 'vuetify';
 
 // repeated in settings.scss
 const breakpoints: DisplayThresholds = {
@@ -8,12 +8,11 @@ const breakpoints: DisplayThresholds = {
   lg: 1280,
   xl: 1920,
   xxl: 2560,
-}
+};
 
-export const forVuetify = breakpoints
+export const forVuetify: DisplayThresholds = breakpoints;
 
-export const forUnoCSS = Object.entries(breakpoints)
-  .reduce(
-    (o, [key, value]) => ({ ...o, [key]: `${value}px` }),
-    {} as Record<keyof DisplayThresholds, string>,
-  )
+/** Same breakpoints in the shape UnoCSS expects (`Record<string, string>`). */
+export const forUnoCSS: Record<string, string> = Object.fromEntries(
+  Object.entries(breakpoints).map(([key, value]) => [key, `${value}px`]),
+);

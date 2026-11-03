@@ -1,0 +1,37 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "all",
+  "endOfLine": "lf",
+  "insertFinalNewline": true,
+  "vueIndentScriptAndStyle": false,
+  "sortImports": {
+    "groups": [
+      "type",
+      ["type-parent", "type-sibling", "type-index", "type-internal"],
+      "builtin",
+      "external",
+      "internal",
+      ["parent", "sibling", "index"],
+      "side_effect",
+      "unknown"
+    ],
+    "internalPattern": ["@/", "~/", "#"],
+    "newlinesBetween": true,
+    "order": "asc"
+  },
+  "sortPackageJson": true,
+  "ignorePatterns": [
+    "dist/**",
+    "dist-ssr/**",
+    "node_modules/**",
+    "coverage/**",
+    "pnpm-lock.yaml",
+    "public/layers.css"
+  ]
+}

@@ -1,11 +1,9 @@
 @layer uno-base;
+@layer uno-preflights;
 @layer uno-theme;
 
 @layer vuetify-core;
 @layer vuetify-components;
-
-@layer uno-icons;
-
 @layer vuetify-overrides;
 @layer vuetify-utilities;
 

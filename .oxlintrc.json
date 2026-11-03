@@ -1,0 +1,52 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "vue", "import", "promise", "node"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "env": {
+    "browser": true,
+    "es2024": true,
+    "node": true
+  },
+  "rules": {
+    // Type hygiene: keep the codebase `any`-free (type-coverage is enforced via pnpm type-coverage).
+    "typescript/no-explicit-any": "error",
+    "typescript/consistent-type-imports": "error",
+    "import/no-unassigned-import": [
+      "warn",
+      { "allow": ["**/*.css", "**/*.scss", "vuetify/styles", "virtual:*"] }
+    ],
+    "vue/component-definition-name-casing": ["error", "PascalCase"],
+    "vue/no-reserved-component-names": "error",
+    "vue/no-export-in-script-setup": "error",
+    "vue/no-dupe-keys": "error",
+    "vue/no-reserved-keys": "error",
+    "vue/no-reserved-props": "error",
+    "vue/no-lifecycle-after-await": "error",
+    "vue/no-watch-after-await": "error",
+    "vue/no-expose-after-await": "error",
+    "vue/no-async-in-computed-properties": "error",
+    "vue/no-side-effects-in-computed-properties": "error",
+    "vue/return-in-computed-property": "error",
+    "vue/return-in-emits-validator": "error",
+    "vue/require-prop-type-constructor": "error",
+    "vue/require-slots-as-functions": "error",
+    "vue/valid-define-props": "error",
+    "vue/valid-define-emits": "error",
+    "vue/valid-define-options": "error",
+    "vue/valid-next-tick": "error",
+    "vue/prefer-import-from-vue": "error",
+    "vue/no-deprecated-destroyed-lifecycle": "error",
+    "vue/no-deprecated-events-api": "error",
+    "vue/no-deprecated-delete-set": "error",
+    "vue/no-deprecated-model-definition": "error",
+    "vue/no-deprecated-props-default-this": "error",
+    "vue/no-deprecated-vue-config-keycodes": "error",
+    "vue/no-deprecated-data-object-declaration": "error",
+    "vue/require-render-return": "error"
+  },
+  "ignorePatterns": ["dist", "node_modules", "coverage", "public"]
+}

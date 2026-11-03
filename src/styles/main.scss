@@ -1,5 +1,9 @@
+@use './vuetify-compat';
+
 @layer vuetify-overrides {
-  code, pre, .v-code {
+  code,
+  pre,
+  .v-code {
     font-family: var(--font-mono);
   }
 }

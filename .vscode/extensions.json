@@ -1,6 +1,10 @@
 {
   "recommendations": [
     "vuetifyjs.vuetify-vscode",
-    "vue.volar"
+    "vue.volar",
+    "antfu.unocss",
+    "oxc.oxc-vscode",
+    "dbaeumer.vscode-eslint",
+    "EditorConfig.EditorConfig"
   ]
 }
