@@ -61,5 +61,6 @@ function onToggleMenu() {
       @click="emit('open-theme-drawer')"
     />
     <AppUserMenu />
+    <template #extension> tabs </template>
   </VAppBar>
 </template>

@@ -499,8 +499,16 @@ Oxlint already covers, so nothing is reported twice.
 ### Editor setup
 
 Recommended extensions are listed in `.vscode/extensions.json`: Volar, Vuetify,
-UnoCSS, Oxc (`oxc.oxc-vscode`), ESLint, EditorConfig. `.vscode/settings.json` makes Oxc the
-default formatter with format-on-save, runs ESLint fixes on save and enables flat config.
+UnoCSS, Oxc (`oxc.oxc-vscode`), ESLint, EditorConfig and i18n Ally. `.vscode/settings.json`
+makes Oxc the default formatter with format-on-save, runs ESLint fixes on save, enables
+flat config and configures i18n Ally:
+
+- `i18n-ally.enabledParsers` includes `ts` — the locale files are TypeScript modules, so
+  the extension's TypeScript parser (its bundled ts-node) is required; otherwise no locale
+  loads and every `t('…')` key is reported as missing.
+- `i18n-ally.ignoreFiles: ["index.ts"]` skips `src/locales/index.ts`, which merges the
+  messages and is not a locale file itself.
+
 Formatting also runs through `pnpm fmt` in CI (`pnpm check`).
 
 ## 🧠 Agent skills (vue-skills)
