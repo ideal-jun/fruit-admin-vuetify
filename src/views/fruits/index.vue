@@ -5,6 +5,8 @@ import { useLocale } from 'vuetify';
 
 import FruitsTable from '@/views/fruits/modules/FruitsTable.vue';
 
+defineOptions({ name: 'FruitsView' });
+
 const { t } = useLocale();
 
 const fruits: FruitRow[] = [

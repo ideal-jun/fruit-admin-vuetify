@@ -1,3 +1,4 @@
+import type { ClosedTabs } from '@/stores/tabs';
 import type { AppTab, TabAction } from '@/typings/tabs';
 import type { RouteMeta, RouteRecordName } from 'vue-router';
 
@@ -5,6 +6,7 @@ import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import { useRouteStore } from '@/stores/route';
 import { useTabsStore } from '@/stores/tabs';
 
 /** The route fields a tab needs, filled from a live route or from a route record. */
@@ -32,6 +34,19 @@ function createTab(source: TabSource): AppTab | undefined {
     titleKey,
     icon,
   };
+}
+
+/**
+ * Purge closed views from the KeepAlive cache after the router has switched away, so the
+ * deactivated views are already cached when KeepAlive prunes them (the reference tab store
+ * resets the cache after `switchRouteByTab`).
+ */
+async function purgeClosedTabs(removedTabs: readonly AppTab[]): Promise<void> {
+  const routeStore = useRouteStore();
+
+  await routeStore.resetRouteCache(
+    routeStore.getCacheRouteNames(removedTabs.map((tab) => tab.fullPath)),
+  );
 }
 
 /**
@@ -124,10 +139,15 @@ export function useTabs() {
   );
 
   /** Follow the navigation target returned by a close action, when the store has one. */
-  function navigateTo(next: AppTab | undefined) {
+  async function navigateTo(next: AppTab | undefined) {
     if (next !== undefined) {
-      void router.push(next.fullPath);
+      await router.push(next.fullPath);
     }
+  }
+
+  async function closeAndPurge(result: ClosedTabs) {
+    await navigateTo(result.nextTab);
+    await purgeClosedTabs(result.removedTabs);
   }
 
   /** Activate a tab: mark it active immediately, then mirror the route. */
@@ -141,47 +161,47 @@ export function useTabs() {
     void router.push(tab.fullPath);
   }
 
-  function closeTab(tabId: string) {
-    navigateTo(tabsStore.removeTab(tabId));
+  async function closeTab(tabId: string) {
+    await closeAndPurge(tabsStore.removeTab(tabId));
   }
 
-  function closeOtherTabs(tabId: string) {
-    navigateTo(tabsStore.clearTabs([tabId]));
+  async function closeOtherTabs(tabId: string) {
+    await closeAndPurge(tabsStore.clearTabs([tabId]));
   }
 
-  function closeLeftTabs(tabId: string) {
-    navigateTo(tabsStore.clearLeftTabs(tabId));
+  async function closeLeftTabs(tabId: string) {
+    await closeAndPurge(tabsStore.clearLeftTabs(tabId));
   }
 
-  function closeRightTabs(tabId: string) {
-    navigateTo(tabsStore.clearRightTabs(tabId));
+  async function closeRightTabs(tabId: string) {
+    await closeAndPurge(tabsStore.clearRightTabs(tabId));
   }
 
-  function closeAllTabs() {
-    navigateTo(tabsStore.clearTabs());
+  async function closeAllTabs() {
+    await closeAndPurge(tabsStore.clearTabs());
   }
 
-  /** Run one menu action; shared by the tab-bar dropdown and the context menu. */
+  /** Run one tab action from the right-click context menu. */
   function runTabAction(action: TabAction, tabId: string) {
     switch (action) {
       case 'close-current': {
-        closeTab(tabId);
+        void closeTab(tabId);
         break;
       }
       case 'close-others': {
-        closeOtherTabs(tabId);
+        void closeOtherTabs(tabId);
         break;
       }
       case 'close-left': {
-        closeLeftTabs(tabId);
+        void closeLeftTabs(tabId);
         break;
       }
       case 'close-right': {
-        closeRightTabs(tabId);
+        void closeRightTabs(tabId);
         break;
       }
       case 'close-all': {
-        closeAllTabs();
+        void closeAllTabs();
         break;
       }
       case 'pin': {

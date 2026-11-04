@@ -35,7 +35,7 @@ export type TabAction =
   | 'pin'
   | 'unpin';
 
-/** One entry of the tab action menus (context menu and dropdown share it). */
+/** One entry of the tab right-click context menu. */
 export interface TabActionItem {
   /** Action identifier. */
   readonly key: TabAction;

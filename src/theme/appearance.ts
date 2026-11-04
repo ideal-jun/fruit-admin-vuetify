@@ -2,6 +2,8 @@ import type {
   AppearanceSettings,
   BreadcrumbSettings,
   HeaderSettings,
+  PageAnimateMode,
+  PageSettings,
   SiderSettings,
   TabMode,
   TabSettings,
@@ -18,6 +20,9 @@ export const DEFAULT_THEME_MODE: ThemeMode = 'system';
 
 /** Default tab bar style: the reference template's chrome-like page tabs. */
 export const DEFAULT_TAB_MODE: TabMode = 'chrome';
+
+/** Default route switch animation: the reference template's fade-slide. */
+export const DEFAULT_PAGE_ANIMATE_MODE: PageAnimateMode = 'fade-slide';
 
 /** Vuetify's default light primary, applied to both themes so the app has one brand color. */
 export const DEFAULT_PRIMARY_COLOR = '#1867C0';
@@ -64,6 +69,14 @@ export const THEME_MODES: readonly ThemeMode[] = ['light', 'dark', 'system'];
 /** Tab bar styles supported by the app. */
 export const TAB_MODES: readonly TabMode[] = ['chrome', 'button', 'slider'];
 
+/** Route switch animations supported by the app (each maps to a Vuetify transition). */
+export const PAGE_ANIMATE_MODES: readonly PageAnimateMode[] = [
+  'fade',
+  'fade-slide',
+  'fade-bottom',
+  'fade-scale',
+];
+
 /** Time formats offered for the content watermark. */
 export const WATERMARK_TIME_FORMATS: readonly WatermarkTimeFormat[] = [
   'YYYY-MM-DD HH:mm',
@@ -82,6 +95,12 @@ export const DEFAULT_TAB_SETTINGS: TabSettings = {
   height: DEFAULT_TAB_HEIGHT,
   mode: DEFAULT_TAB_MODE,
   closeTabByMiddleClick: true,
+};
+
+/** Default routed-view switch settings. */
+export const DEFAULT_PAGE_SETTINGS: PageSettings = {
+  animate: true,
+  animateMode: DEFAULT_PAGE_ANIMATE_MODE,
 };
 
 /** Default app-bar settings. */
@@ -115,6 +134,7 @@ export const DEFAULT_APPEARANCE_SETTINGS: AppearanceSettings = {
   grayscale: false,
   colourWeakness: false,
   tab: DEFAULT_TAB_SETTINGS,
+  page: DEFAULT_PAGE_SETTINGS,
   header: DEFAULT_HEADER_SETTINGS,
   sider: DEFAULT_SIDER_SETTINGS,
   watermark: DEFAULT_WATERMARK_SETTINGS,
@@ -126,6 +146,8 @@ const THEME_MODE_SET: ReadonlySet<string> = new Set<string>(THEME_MODES);
 
 const TAB_MODE_SET: ReadonlySet<string> = new Set<string>(TAB_MODES);
 
+const PAGE_ANIMATE_MODE_SET: ReadonlySet<string> = new Set<string>(PAGE_ANIMATE_MODES);
+
 const WATERMARK_TIME_FORMAT_SET: ReadonlySet<string> = new Set<string>(WATERMARK_TIME_FORMATS);
 
 export function isThemeMode(value: unknown): value is ThemeMode {
@@ -134,6 +156,10 @@ export function isThemeMode(value: unknown): value is ThemeMode {
 
 export function isTabMode(value: unknown): value is TabMode {
   return typeof value === 'string' && TAB_MODE_SET.has(value);
+}
+
+export function isPageAnimateMode(value: unknown): value is PageAnimateMode {
+  return typeof value === 'string' && PAGE_ANIMATE_MODE_SET.has(value);
 }
 
 export function isWatermarkTimeFormat(value: unknown): value is WatermarkTimeFormat {
@@ -194,6 +220,17 @@ function readTabSettings(value: unknown, legacyTabMode: unknown): TabSettings {
       raw.closeTabByMiddleClick,
       DEFAULT_TAB_SETTINGS.closeTabByMiddleClick,
     ),
+  };
+}
+
+function readPageSettings(value: unknown): PageSettings {
+  const raw = isRecord(value) ? value : {};
+
+  return {
+    animate: readBoolean(raw.animate, DEFAULT_PAGE_SETTINGS.animate),
+    animateMode: isPageAnimateMode(raw.animateMode)
+      ? raw.animateMode
+      : DEFAULT_PAGE_SETTINGS.animateMode,
   };
 }
 
@@ -267,6 +304,7 @@ export function readAppearanceSettings(): AppearanceSettings {
       colourWeakness: readBoolean(parsed.colourWeakness, false),
       // The flat `tabMode` key is the pre-port format; keep reading it for older sessions.
       tab: readTabSettings(parsed.tab, parsed.tabMode),
+      page: readPageSettings(parsed.page),
       header: readHeaderSettings(parsed.header),
       sider: readSiderSettings(parsed.sider),
       watermark: readWatermarkSettings(parsed.watermark),

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TabMode } from '@/typings/theme';
+import type { PageAnimateMode, TabMode } from '@/typings/theme';
 
 import { computed } from 'vue';
 import { useLocale } from 'vuetify';
@@ -7,11 +7,16 @@ import { useLocale } from 'vuetify';
 import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
 import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
 import { useThemeStore } from '@/stores/theme';
-import { isTabMode } from '@/theme/appearance';
+import { isPageAnimateMode, isTabMode } from '@/theme/appearance';
 
 interface TabModeOption {
   readonly title: string;
   readonly value: TabMode;
+}
+
+interface PageAnimateModeOption {
+  readonly title: string;
+  readonly value: PageAnimateMode;
 }
 
 const { t } = useLocale();
@@ -21,6 +26,13 @@ const tabModeOptions = computed<TabModeOption[]>(() => [
   { title: t('theme.tabModeChrome'), value: 'chrome' },
   { title: t('theme.tabModeButton'), value: 'button' },
   { title: t('theme.tabModeSlider'), value: 'slider' },
+]);
+
+const pageAnimateModeOptions = computed<PageAnimateModeOption[]>(() => [
+  { title: t('theme.layout.pageAnimateFade'), value: 'fade' },
+  { title: t('theme.layout.pageAnimateSlide'), value: 'fade-slide' },
+  { title: t('theme.layout.pageAnimateBottom'), value: 'fade-bottom' },
+  { title: t('theme.layout.pageAnimateScale'), value: 'fade-scale' },
 ]);
 
 const showBreadcrumbIcon = computed(() => themeStore.header.breadcrumb.visible);
@@ -52,6 +64,18 @@ function setTabMode(value: unknown) {
 function setCloseTabByMiddleClick(value: unknown) {
   if (typeof value === 'boolean') {
     themeStore.updateTabSettings({ closeTabByMiddleClick: value });
+  }
+}
+
+function setPageAnimate(value: unknown) {
+  if (typeof value === 'boolean') {
+    themeStore.updatePageSettings({ animate: value });
+  }
+}
+
+function setPageAnimateMode(value: unknown) {
+  if (isPageAnimateMode(value)) {
+    themeStore.updatePageSettings({ animateMode: value });
   }
 }
 
@@ -151,6 +175,34 @@ function setSiderCollapsedWidth(value: number | null) {
           />
         </SettingItem>
       </template>
+    </div>
+
+    <SettingDivider :title="t('theme.layout.pageTitle')" />
+
+    <div class="flex flex-col gap-3">
+      <SettingItem :label="t('theme.layout.pageAnimate')">
+        <VSwitch
+          color="primary"
+          density="compact"
+          hide-details
+          :model-value="themeStore.page.animate"
+          @update:model-value="setPageAnimate"
+        />
+      </SettingItem>
+
+      <SettingItem v-if="themeStore.page.animate" :label="t('theme.layout.pageAnimateMode')">
+        <VSelect
+          density="compact"
+          hide-details
+          item-title="title"
+          item-value="value"
+          :items="pageAnimateModeOptions"
+          max-width="160"
+          :model-value="themeStore.page.animateMode"
+          variant="outlined"
+          @update:model-value="setPageAnimateMode"
+        />
+      </SettingItem>
     </div>
 
     <SettingDivider :title="t('theme.layout.headerTitle')" />

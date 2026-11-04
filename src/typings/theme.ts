@@ -4,6 +4,9 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 /** Tab bar visual styles (the reference PageTab modes). */
 export type TabMode = 'chrome' | 'button' | 'slider';
 
+/** Route switch animations, each mapped to a Vuetify transition component. */
+export type PageAnimateMode = 'fade' | 'fade-slide' | 'fade-bottom' | 'fade-scale';
+
 /** Time formats offered for the content watermark. */
 export type WatermarkTimeFormat =
   | 'YYYY-MM-DD HH:mm'
@@ -26,6 +29,14 @@ export interface TabSettings {
   readonly mode: TabMode;
   /** Whether a middle click closes a tab. */
   readonly closeTabByMiddleClick: boolean;
+}
+
+/** Routed-view switch settings. */
+export interface PageSettings {
+  /** Whether route switches animate. */
+  readonly animate: boolean;
+  /** Animation used for route switches. */
+  readonly animateMode: PageAnimateMode;
 }
 
 /** App-bar breadcrumb settings. */
@@ -72,6 +83,7 @@ export interface AppearanceSettings {
   readonly grayscale: boolean;
   readonly colourWeakness: boolean;
   readonly tab: TabSettings;
+  readonly page: PageSettings;
   readonly header: HeaderSettings;
   readonly sider: SiderSettings;
   readonly watermark: WatermarkSettings;
@@ -85,6 +97,7 @@ export interface ThemeSettingsPatch {
   readonly grayscale?: boolean;
   readonly colourWeakness?: boolean;
   readonly tab?: Partial<TabSettings>;
+  readonly page?: Partial<PageSettings>;
   readonly header?: {
     readonly height?: number;
     readonly searchVisible?: boolean;

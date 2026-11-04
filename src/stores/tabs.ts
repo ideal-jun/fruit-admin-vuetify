@@ -8,6 +8,12 @@ import { useThemeStore } from '@/stores/theme';
 /** localStorage key for the restored (non-home) tabs. */
 export const TABS_STORAGE_KEY = 'fruit-admin.tabs';
 
+/** Result of a tab close: the tab to activate (when the active one went away) and the removed tabs. */
+export interface ClosedTabs {
+  readonly nextTab: AppTab | undefined;
+  readonly removedTabs: AppTab[];
+}
+
 /** Whether the tab is pinned. The fixedIndex is the dense pin order (0-based). */
 function isFixedTab(tab: AppTab): tab is AppTab & { readonly fixedIndex: number } {
   return tab.fixedIndex !== undefined;
@@ -264,16 +270,18 @@ export const useTabsStore = defineStore('tabs', () => {
   function removeTabsByIds(
     previousOrder: readonly AppTab[],
     removedIds: ReadonlySet<string>,
-  ): AppTab | undefined {
+  ): ClosedTabs {
     if (removedIds.size === 0) {
-      return undefined;
+      return { nextTab: undefined, removedTabs: [] };
     }
+
+    const removedTabs = previousOrder.filter((tab) => removedIds.has(tab.id));
 
     tabs.value = tabs.value.filter((tab) => !removedIds.has(tab.id));
     const nextTab = activateNextTab(previousOrder, removedIds);
     persist();
 
-    return nextTab;
+    return { nextTab, removedTabs };
   }
 
   /**
@@ -372,9 +380,9 @@ export const useTabsStore = defineStore('tabs', () => {
   }
 
   /** Close a tab; returns the tab to activate when the closed one was active. */
-  function removeTab(tabId: string): AppTab | undefined {
+  function removeTab(tabId: string): ClosedTabs {
     if (isRetained(tabId) || findTab(tabId) === undefined) {
-      return undefined;
+      return { nextTab: undefined, removedTabs: [] };
     }
 
     return removeTabsByIds(orderedTabs.value, new Set<string>([tabId]));
@@ -385,7 +393,7 @@ export const useTabsStore = defineStore('tabs', () => {
    * tabs are always kept. Returns the tab to activate when the active one was
    * closed.
    */
-  function clearTabs(keepTabIds: readonly string[] = []): AppTab | undefined {
+  function clearTabs(keepTabIds: readonly string[] = []): ClosedTabs {
     const keep = new Set(keepTabIds);
     const removedIds = new Set(
       tabs.value
@@ -400,12 +408,12 @@ export const useTabsStore = defineStore('tabs', () => {
    * Close the unpinned tabs left of the target, keeping the target and everything
    * right of it; the home and pinned tabs are retained.
    */
-  function clearLeftTabs(tabId: string): AppTab | undefined {
+  function clearLeftTabs(tabId: string): ClosedTabs {
     const previousOrder = orderedTabs.value;
     const targetIndex = previousOrder.findIndex((tab) => tab.id === tabId);
 
     if (targetIndex === -1) {
-      return undefined;
+      return { nextTab: undefined, removedTabs: [] };
     }
 
     const removedIds = new Set<string>();
@@ -423,7 +431,7 @@ export const useTabsStore = defineStore('tabs', () => {
    * Close the unpinned tabs right of the target; on the home tab every unpinned
    * tab is closed (the pinned tabs are retained).
    */
-  function clearRightTabs(tabId: string): AppTab | undefined {
+  function clearRightTabs(tabId: string): ClosedTabs {
     if (homeTab.value !== null && tabId === homeTab.value.id) {
       return clearTabs();
     }
@@ -432,7 +440,7 @@ export const useTabsStore = defineStore('tabs', () => {
     const targetIndex = previousOrder.findIndex((tab) => tab.id === tabId);
 
     if (targetIndex === -1) {
-      return undefined;
+      return { nextTab: undefined, removedTabs: [] };
     }
 
     const removedIds = new Set<string>();

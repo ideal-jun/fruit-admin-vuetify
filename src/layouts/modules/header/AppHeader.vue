@@ -20,6 +20,8 @@ interface Props {
   rail?: boolean;
   /** Content fullscreen: collapse the header to the tab bar only. */
   fullContent?: boolean;
+  /** The routed view is remounting after a tab-bar refresh. */
+  reloading?: boolean;
 }
 
 interface Emits {
@@ -31,10 +33,17 @@ interface Emits {
   'open-theme-drawer': [];
   /** The tab-bar fullscreen button was pressed — the layout owns the layout state. */
   'toggle-fullscreen': [];
+  /** The tab-bar refresh button was pressed — the layout remounts the routed view. */
+  reload: [];
 }
 
 // Vue 3.5 reactive props destructure: native defaults instead of withDefaults().
-const { mobile = false, rail = false, fullContent = false } = defineProps<Props>();
+const {
+  mobile = false,
+  rail = false,
+  fullContent = false,
+  reloading = false,
+} = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const { t } = useLocale();
@@ -69,6 +78,7 @@ function onToggleMenu() {
 <template>
   <VAppBar
     :density="!fullContent ? 'comfortable' : null"
+    :extended="themeStore.tab.visible"
     :extension-height="tabBarHeight"
     :height="appBarHeight"
   >
@@ -95,7 +105,12 @@ function onToggleMenu() {
     </template>
 
     <template v-if="themeStore.tab.visible" #extension>
-      <AppTabs :full-content="fullContent" @toggle-fullscreen="emit('toggle-fullscreen')" />
+      <AppTabs
+        :full-content="fullContent"
+        :reloading="reloading"
+        @reload="emit('reload')"
+        @toggle-fullscreen="emit('toggle-fullscreen')"
+      />
     </template>
   </VAppBar>
 </template>

@@ -394,6 +394,11 @@ export const routes: RouteRecordRaw[] = [
   `meta: { nav: true, titleKey, icon }` shows up automatically
   ([`useNavigation.ts`](src/composables/useNavigation.ts)).
 - Content: the route's child page, rendered by `<RouterView />`.
+- Route switches animate with a Vuetify transition component (`mode="out-in"`); the style
+  is configurable in **Appearance → Layout → Page**: `fade` (`VFadeTransition`),
+  `fade-slide` (`VScrollXTransition`, the default), `fade-bottom` (`VScrollYTransition`)
+  or `fade-scale` (`VScaleTransition`). The `page.animate` switch turns it off; no
+  hand-written CSS is involved.
 - The chrome state — drawer open, desktop rail, appearance drawer — lives in `BaseLayout`
   and flows down explicitly (props + events to the header, `v-model` to the drawers).
 
@@ -417,6 +422,29 @@ share [`AppIconButton.vue`](src/components/common/AppIconButton.vue) (icon butto
 | Appearance drawer   | [`AppThemeDrawer.vue`](src/layouts/modules/theme-drawer/AppThemeDrawer.vue)     | theme mode tabs + primary-color swatches                                                                                                                              |
 | User menu           | [`AppUserMenu.vue`](src/layouts/modules/header/AppUserMenu.vue)                 | demo auth (`useAuthStore`): sign-in button → `/login`, avatar + sign-out when signed in                                                                               |
 
+### Tabs
+
+The tab bar is rendered in the app bar's `VAppBar` **`#extension`** slot by
+[`AppTabs.vue`](src/layouts/modules/tabs/AppTabs.vue). A route is tabbable when its merged
+`meta.tabs` is true — set once on the `BaseLayout` parent in
+[`src/router/routes.ts`](src/router/routes.ts) — and tabs take their label/icon from
+`meta.titleKey` / `meta.icon`. Home and pinned tabs are retained, and the strip is
+persisted under `fruit-admin.tabs`.
+
+- Click a tab to switch, close it with the × button or middle-click, or use the right-click
+  menu (close current / others / left / right / all, pin / unpin).
+- The **refresh** button follows the reference `reloadFlag` pattern: `BaseLayout` hides the
+  routed view (`v-if` inside the transition, so its leave animation plays), keeps it hidden
+  for 500 ms (40 ms when animations are off), then shows it again (enter animation + fresh
+  remount). The button spins while the view is hidden; the route and tab strip are preserved.
+- **Keep-alive**: views marked with `meta.keepAlive` (the KeepAlive component name, e.g.
+  `HomeView`) stay cached while their tab is open. [`useRouteStore`](src/stores/route.ts)
+  owns the KeepAlive `include` / `exclude` lists; closing a tab or refreshing drops that
+  view from the cache, so it mounts with fresh state next time. The "cache tabs" setting
+  (`themeStore.tab.cache`) disables both tab restore and view caching.
+- The rendering primitives are generic: [`PageTab.vue`](src/components/advanced/page-tab/PageTab.vue),
+  `ChromeTabBg.vue` and `pageTabStyles.ts` live in `src/components/advanced/page-tab/`.
+
 ### Appearance (theme) settings
 
 - [`src/stores/theme.ts`](src/stores/theme.ts) (Pinia setup store) owns `mode`
@@ -427,6 +455,9 @@ share [`AppIconButton.vue`](src/components/common/AppIconButton.vue) (icon butto
 - The primary color is written to `theme.themes.value.{light,dark}.colors.primary`, so
   everything driven by `rgb(var(--v-theme-primary))` — Vuetify components and UnoCSS
   `bg-primary` / `text-primary` — updates at once.
+- Routed-view transitions are appearance settings too: `themeStore.page.animate` and
+  `themeStore.page.animateMode` (`fade` / `fade-slide` / `fade-bottom` / `fade-scale`),
+  persisted with the rest under `fruit-admin.appearance`.
 - [`App.vue`](src/App.vue) creates the store before the first render, so the saved theme is
   applied without a flash.
 - Add a color to `PRIMARY_COLOR_SWATCHES` to expose it in the drawer.
@@ -444,8 +475,19 @@ a backend.
 | ------------------ | ----------- | --------------- | ------------------------------------------ |
 | `/`                | `home`      | BaseLayout      | `nav: true` — 首页                         |
 | `/fruits`          | `fruits`    | BaseLayout      | `nav: true` — demo table view              |
+| `/users`           | `users`     | BaseLayout      | `nav: true` — user management (mock CRUD)  |
 | `/login`           | `login`     | **BlankLayout** | full-screen sign-in demo (any credentials) |
 | `/:pathMatch(.*)*` | `not-found` | —               | `redirect: '/'`                            |
+
+The `/users` view is a Vuetify port of the reference user-management page: search filters,
+a selectable data table with pagination, add/edit drawer, single/batch delete, column visibility
+and mock data. Its table state comes from the ported hooks in
+[`src/composables/useTable.ts`](src/composables/useTable.ts): `useTable` owns rows, loading and
+column checks, while `useTableOperate` owns the add/edit drawer, row selection and delete
+refresh. The view reuses the tab bar, KeepAlive cache (`UsersView`) and theme settings.
+Its route sets `meta.fullHeight`, so the layout hands the view the remaining content height:
+the table card flexes below the search card, scrolls internally and keeps its pagination
+footer visible (the page switches back to normal document scrolling on phones).
 
 ### Adding a view / a layout
 
@@ -559,7 +601,7 @@ Notes:
 - Plugins: `src/plugins/`
 - Translations: `src/locales/` (`zh-Hans` default, `en`), Vuetify strings under `$vuetify`
 - Types: `src/typings/` (ambient `*.d.ts` + shared app types, see [TypeScript](#-typescript))
-- State: `src/stores/` (`theme.ts` = appearance settings, `auth.ts` = demo session)
+- State: `src/stores/` (`theme.ts` = appearance settings, `auth.ts` = demo session, `tabs.ts` = visited page tabs, `route.ts` = KeepAlive cache)
 - Styles: `src/styles/` (`settings.scss` = Vuetify Sass bootstrap, `vuetify-compat.scss` = restored utilities)
 - Theme bridge: `src/theme/` (`breakpoints.ts` = shared breakpoints, `appearance.ts` = theme defaults / swatches)
 - UnoCSS config: `uno.config.ts`
@@ -575,13 +617,13 @@ Notes:
 │  ├─ components/             # cross-page reusable components only
 │  │  ├─ advanced/            # generic primitives (page-tab/)
 │  │  └─ common/              # shared controls (icon button, locale, theme, watermark)
-│  ├─ composables/            # useAppLocale, useBreadcrumb, useFullscreen, useNavigation, usePageTitle
+│  ├─ composables/            # useAppLocale, useBreadcrumb, useFullscreen, useNavigation, usePageTitle, useTable
 │  ├─ layouts/                # BaseLayout, BlankLayout + modules/ (header, sider, tabs, theme-drawer)
 │  ├─ locales/                # app messages + merged Vuetify translations
-│  ├─ views/                  # route views as folders (home/, fruits/, login/) with modules/
+│  ├─ views/                  # route views as folders (home/, fruits/, users/, login/) with modules/
 │  ├─ plugins/                # Vuetify, Pinia, i18n, router registration
 │  ├─ router/
-│  ├─ stores/                 # theme.ts (appearance), auth.ts (demo session)
+│  ├─ stores/                 # theme.ts (appearance), auth.ts (demo session), tabs.ts, route.ts (KeepAlive)
 │  ├─ styles/                 # settings.scss, main.scss, vuetify-compat.scss
 │  ├─ theme/                  # breakpoints.ts, appearance.ts (theme defaults, swatches, storage)
 │  └─ typings/                # *.d.ts + shared app types (auth, env, i18n, navigation, theme, …)

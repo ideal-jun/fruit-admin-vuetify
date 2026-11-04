@@ -7,7 +7,6 @@ import { useLocale, useTheme } from 'vuetify';
 import AppIconButton from '@/components/common/AppIconButton.vue';
 import { useTabMenu } from '@/composables/useTabMenu';
 import { useTabs } from '@/composables/useTabs';
-import AppTabActionsMenu from '@/layouts/modules/tabs/AppTabActionsMenu.vue';
 import AppTabContextMenu from '@/layouts/modules/tabs/AppTabContextMenu.vue';
 import AppTabItem from '@/layouts/modules/tabs/AppTabItem.vue';
 import { useThemeStore } from '@/stores/theme';
@@ -27,14 +26,18 @@ interface ContextMenuState {
 interface Props {
   /** Content fullscreen is active: the tab bar offers the exit action. */
   fullContent?: boolean;
+  /** The active view is remounting — the refresh button spins. */
+  reloading?: boolean;
 }
 
 interface Emits {
   /** The fullscreen button was pressed — the layout owns the layout state. */
   'toggle-fullscreen': [];
+  /** The refresh button was pressed — the layout remounts the routed view. */
+  reload: [];
 }
 
-const { fullContent = false } = defineProps<Props>();
+const { fullContent = false, reloading = false } = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const { t } = useLocale();
@@ -60,7 +63,6 @@ const tabScrollRef = useTemplateRef<HTMLElement>('tab-scroll');
 // Plain menu state object, replaced wholesale on every change → shallowRef is enough.
 const contextMenu = shallowRef<ContextMenuState>({ open: false, x: 0, y: 0, tabId: '' });
 
-const actionsMenuOptions = computed(() => getMenuOptions(activeTabId.value));
 const contextMenuOptions = computed(() =>
   contextMenu.value.open ? getMenuOptions(contextMenu.value.tabId) : [],
 );
@@ -258,12 +260,18 @@ watch(
 
     <AppIconButton
       density="comfortable"
+      icon="mdi-refresh"
+      :loading="reloading"
+      :tooltip="t('tabs.reload')"
+      @click="emit('reload')"
+    />
+
+    <AppIconButton
+      density="comfortable"
       :icon="fullContent ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
       :tooltip="fullContent ? t('layout.contentFullscreenExit') : t('layout.contentFullscreen')"
       @click="emit('toggle-fullscreen')"
     />
-
-    <AppTabActionsMenu :options="actionsMenuOptions" @select="runTabAction($event, activeTabId)" />
 
     <AppTabContextMenu
       :open="contextMenu.open"

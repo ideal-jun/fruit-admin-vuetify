@@ -2,6 +2,7 @@ import type {
   AppearanceSettings,
   BreadcrumbSettings,
   HeaderSettings,
+  PageSettings,
   TabMode,
   TabSettings,
   ThemeMode,
@@ -35,6 +36,7 @@ function mergeSettings(base: AppearanceSettings, patch: ThemeSettingsPatch): App
     grayscale: patch.grayscale ?? base.grayscale,
     colourWeakness: patch.colourWeakness ?? base.colourWeakness,
     tab: { ...base.tab, ...patch.tab },
+    page: { ...base.page, ...patch.page },
     header: {
       ...base.header,
       ...patch.header,
@@ -67,6 +69,7 @@ export const useThemeStore = defineStore('theme', () => {
   const colourWeakness = computed(() => settings.value.colourWeakness);
   const tab = computed(() => settings.value.tab);
   const tabMode = computed(() => settings.value.tab.mode);
+  const page = computed(() => settings.value.page);
   const header = computed(() => settings.value.header);
   const sider = computed(() => settings.value.sider);
   const watermark = computed(() => settings.value.watermark);
@@ -150,6 +153,10 @@ export const useThemeStore = defineStore('theme', () => {
     update({ ...settings.value, tab: { ...settings.value.tab, ...patch } });
   }
 
+  function updatePageSettings(patch: Partial<PageSettings>) {
+    update({ ...settings.value, page: { ...settings.value.page, ...patch } });
+  }
+
   function updateHeaderSettings(patch: HeaderSettingsPatch) {
     update({
       ...settings.value,
@@ -205,6 +212,7 @@ export const useThemeStore = defineStore('theme', () => {
     colourWeakness,
     tab,
     tabMode,
+    page,
     header,
     sider,
     watermark,
@@ -215,6 +223,7 @@ export const useThemeStore = defineStore('theme', () => {
     setColourWeakness,
     setTabMode,
     updateTabSettings,
+    updatePageSettings,
     updateHeaderSettings,
     updateBreadcrumbSettings,
     updateSiderSettings,

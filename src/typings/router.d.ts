@@ -18,6 +18,16 @@ declare module 'vue-router' {
     nav?: boolean;
     /** Mark the shell's landing route: its tab is the retained home tab. */
     home?: boolean;
+    /**
+     * KeepAlive component name of this view (e.g. `HomeView`). Routes with a name here
+     * are cached while their tab is open; closing the tab or refreshing drops the cache.
+     */
+    keepAlive?: string;
+    /**
+     * Let the view own the remaining content height (the layout container becomes
+     * `h-full`). Used by pages whose card/table must fill the viewport.
+     */
+    fullHeight?: boolean;
   }
 }
 

@@ -6,6 +6,8 @@ import HomeHero from '@/views/home/modules/HomeHero.vue';
 import HomeI18nDemo from '@/views/home/modules/HomeI18nDemo.vue';
 import HomeLinkCard from '@/views/home/modules/HomeLinkCard.vue';
 
+defineOptions({ name: 'HomeView' });
+
 const links: HomeLink[] = [
   {
     href: 'https://vuetifyjs.com/',

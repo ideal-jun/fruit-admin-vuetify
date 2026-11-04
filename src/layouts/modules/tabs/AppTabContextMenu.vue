@@ -11,7 +11,7 @@ interface Props {
   x: number;
   /** Vertical position of the right click, in viewport coordinates. */
   y: number;
-  /** Actions shared with the tab-bar dropdown. */
+  /** Actions rendered in the context menu. */
   options: readonly TabActionItem[];
 }
 

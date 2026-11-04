@@ -24,6 +24,7 @@ export interface AppMessages {
     menu: string;
     home: string;
     fruits: string;
+    users: string;
   };
   layout: {
     toggleTheme: string;
@@ -54,6 +55,7 @@ export interface AppMessages {
     pin: string;
     unpin: string;
     close: string;
+    reload: string;
   };
   theme: {
     title: string;
@@ -86,6 +88,13 @@ export interface AppMessages {
       tabHeight: string;
       tabStyle: string;
       closeTabByMiddleClick: string;
+      pageTitle: string;
+      pageAnimate: string;
+      pageAnimateMode: string;
+      pageAnimateFade: string;
+      pageAnimateSlide: string;
+      pageAnimateBottom: string;
+      pageAnimateScale: string;
       headerTitle: string;
       headerHeight: string;
       breadcrumbVisible: string;
@@ -154,6 +163,60 @@ export interface AppMessages {
         banana: string;
         orange: string;
       };
+    };
+    users: {
+      title: string;
+      addUser: string;
+      editUser: string;
+      search: string;
+      reset: string;
+      refresh: string;
+      columns: string;
+      add: string;
+      delete: string;
+      batchDelete: string;
+      operate: string;
+      index: string;
+      username: string;
+      nickname: string;
+      userGender: string;
+      userPhone: string;
+      userEmail: string;
+      userStatus: string;
+      userRole: string;
+      createTime: string;
+      male: string;
+      female: string;
+      enabled: string;
+      disabled: string;
+      roles: {
+        super: string;
+        admin: string;
+        user: string;
+      };
+      form: {
+        username: string;
+        nickname: string;
+        userPhone: string;
+        userEmail: string;
+        userRole: string;
+      };
+      validation: {
+        username: string;
+        email: string;
+        phone: string;
+      };
+      confirmDeleteTitle: string;
+      confirmDelete: string;
+      confirmBatchDelete: string;
+      addSuccess: string;
+      updateSuccess: string;
+      deleteSuccess: string;
+      batchDeleteSuccess: string;
+      empty: string;
+      cancel: string;
+      confirm: string;
+      save: string;
     };
   };
 }

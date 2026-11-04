@@ -54,6 +54,10 @@ components:
   park layout- or page-specific components in `components/`.
 - Split a component when it owns **3+ UI sections** or has more than one responsibility;
   route views must not embed feature implementations.
+- Reusable data-table state belongs in `src/composables/useTable.ts`: `useTable` owns rows,
+  loading, column checks and the fetch lifecycle; `useTableOperate` owns the add/edit drawer,
+  row selection and delete refresh. Pages supply the API, the transform and their concrete
+  column/header shape.
 - **Props down, events up.** Type contracts with `defineProps<Props>()` /
   `defineEmits<Emits>()`; use `defineModel<T>()` for genuine two-way bindings; prefer
   Vue 3.5 reactive props destructure (`const { x = fallback } = defineProps<Props>()`)
@@ -76,7 +80,15 @@ with `<component :is>` and do not add `meta.layout`.
 - **`BaseLayout`** (parent of the app views in `src/views/`) = `VNavigationDrawer` (left menu) + `VAppBar`
   (header) + `VMain` with `<RouterView />` (content). Never put an app bar / drawer inside
   a view — they belong to the layout. It owns the chrome UI state (drawer open, desktop
-  rail, appearance drawer) and passes it down explicitly.
+  rail, appearance drawer) and passes it down explicitly. Route switches use the Vuetify
+  transition component selected by `themeStore.page.animateMode` (`fade` /
+  `fade-slide` / `fade-bottom` / `fade-scale`) with `mode="out-in"`;
+  `themeStore.page.animate` disables the animation. The routed component sits inside the
+  transition behind `v-if="viewVisible"`; the tab-bar refresh hides it (leave), waits 500 ms
+  (40 ms without animations), then shows it again (enter + fresh remount) — the reference's
+  `reloadFlag`/`reloadPage` behaviour. It is wrapped in `<KeepAlive :include :exclude>`:
+  `useRouteStore` (`src/stores/route.ts`) owns the `meta.keepAlive` component names and the
+  temporary exclusion list used to drop a view from the cache.
 - **App bar** = `AppHeader.vue`, composition only: each control is a small component under
   `src/layouts/modules/header/` (menu/rail toggler, breadcrumb, global search, fullscreen,
   user menu) or `src/components/common/` when reused (icon button, locale menu, theme
@@ -89,8 +101,16 @@ with `<component :is>` and do not add `meta.layout`.
   (`items` is gated on the bound `v-model:search` value). Its custom `#input` wraps the
   palette's keydown handler with an IME guard (`event.isComposing`) so the Enter that
   commits a pinyin/IME composition never executes the highlighted item.
-- Appearance settings live in `src/stores/theme.ts`: `mode` (`light` / `dark` / `system`) and
-  `primary`, persisted under `fruit-admin.appearance`. Mutating the Vuetify theme updates
+- **Tabs** live in the app bar's `#extension` slot (`src/layouts/modules/tabs/`), with the
+  generic `PageTab` primitives under `src/components/advanced/page-tab/`. A route is
+  tabbable when the merged `meta.tabs` is true (set once on the `BaseLayout` parent). The
+  tab-bar refresh button uses `BaseLayout`'s `viewVisible` flag to hide → wait → re-show the
+  active view (reference `reloadFlag` pattern), so the leave/enter transitions replay and
+  the view remounts. Closing a tab purges its view from the KeepAlive cache through
+  `useRouteStore().resetRouteCache()`.
+- Appearance settings live in `src/stores/theme.ts`: `mode` (`light` / `dark` / `system`),
+  `primary` and the routed-view animation (`page.animate` / `page.animateMode`), persisted
+  under `fruit-admin.appearance`. Mutating the Vuetify theme updates
   `rgb(var(--v-theme-primary))` — and therefore `bg-primary` / `text-primary` — at once.
   Create the store in `App.vue` before the first render so the saved theme applies without
   a flash.
@@ -102,7 +122,10 @@ with `<component :is>` and do not add `meta.layout`.
 - Views render into the layout's `<RouterView />`; they are layout-agnostic.
 - Sidebar entries come from route metadata — `meta: { nav: true, titleKey, icon }`; a new
   route with those fields appears in the menu automatically (`useNavigation`). Labels must
-  be i18n keys, never hard-coded text.
+  be i18n keys, never hard-coded text. Optional `meta.keepAlive` is the view's KeepAlive
+  component name (the view must declare it with `defineOptions({ name })`). Optional
+  `meta.fullHeight` makes the layout container `h-full` so a page can own the remaining
+  viewport height (used by the users table card).
 - Route-level components live in **`src/views/<page>/index.vue`** (not `pages/`), with
   page-private UI under `src/views/<page>/modules/`. To add a view, create that folder and
   register its `index.vue` as a child of the layout that should render it. To add a
@@ -119,6 +142,8 @@ Stores are **setup stores** in `src/stores/` and the single writer for their dom
   explicitly (no hidden watchers) and persist it; they run in `App.vue` setup so the saved
   theme is applied before the shell renders.
 - `auth.ts` — demo session; `signIn` / `signOut` persist the user.
+- `route.ts` — KeepAlive cache: `meta.keepAlive` component names (`cacheRoutes`) plus
+  `resetRouteCache()` (exclude for one tick, then clear) for refresh and tab close.
 - Persist with a `typeof localStorage === 'undefined'` guard and a `try/catch` — storage can
   be unavailable (SSR, private mode).
 
@@ -172,8 +197,9 @@ app and every Vuetify component.
   from `AppMessages`; Vite ignores `tsconfig` `paths`, so the runtime import is unchanged.
   Keep that alias when changing the `paths` block.
 - Register `app.use(i18n)` **before** `app.use(vuetify)` in `src/plugins/index.ts`.
-- App-bar strings live under `layout.*` (search, fullscreen, menu, account) and
-  `theme.*` (appearance drawer); add new keys to both locale files and `AppMessages`.
+- App-bar strings live under `layout.*` (search, fullscreen, menu, account), tab-bar
+  strings under `tabs.*` and `theme.*` (appearance drawer); add new keys to both locale
+  files and `AppMessages`.
 
 ## Styling
 

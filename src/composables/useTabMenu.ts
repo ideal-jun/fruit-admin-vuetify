@@ -16,7 +16,7 @@ const TAB_ACTION_ICONS: Record<TabAction, string> = {
 };
 
 /**
- * Tab action options shared by the tab-bar dropdown and the right-click context menu.
+ * Tab action options for the right-click context menu.
  *
  * Both entry points have to offer the same actions with the same disabled/pin rules,
  * so those rules live here instead of in the two presentational menus.
