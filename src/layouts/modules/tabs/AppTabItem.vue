@@ -4,7 +4,7 @@ import type { TabMode } from '@/typings/theme';
 
 import { useLocale } from 'vuetify';
 
-import PageTab from '@/components/layout/tabs/PageTab.vue';
+import PageTab from '@/components/advanced/page-tab/PageTab.vue';
 import { DEFAULT_PRIMARY_COLOR } from '@/theme/appearance';
 
 interface Props {

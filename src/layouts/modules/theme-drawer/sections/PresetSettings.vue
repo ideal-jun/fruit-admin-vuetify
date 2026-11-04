@@ -4,7 +4,7 @@ import type { ThemeMode, ThemePresetDefinition } from '@/typings/theme';
 import { computed, shallowRef } from 'vue';
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/components/layout/theme/SettingDivider.vue';
+import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
 import { useThemeStore } from '@/stores/theme';
 import { THEME_PRESETS } from '@/theme/presets';
 

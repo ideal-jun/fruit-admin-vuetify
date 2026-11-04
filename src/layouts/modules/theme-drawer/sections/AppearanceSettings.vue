@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/components/layout/theme/SettingDivider.vue';
-import SettingItem from '@/components/layout/theme/SettingItem.vue';
-import ThemeColorPicker from '@/components/layout/theme/ThemeColorPicker.vue';
-import ThemeModePicker from '@/components/layout/theme/ThemeModePicker.vue';
+import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
+import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
+import ThemeColorPicker from '@/layouts/modules/theme-drawer/ThemeColorPicker.vue';
+import ThemeModePicker from '@/layouts/modules/theme-drawer/ThemeModePicker.vue';
 import { useThemeStore } from '@/stores/theme';
 
 const { t } = useLocale();

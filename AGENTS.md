@@ -46,10 +46,12 @@ Never hand-format code or hand-sort imports: run `pnpm fix`.
 Follow the `vue-best-practices` skill (loaded for Vue work) when creating or changing
 components:
 
-- **Keep route views thin composition surfaces.** A view wires data + children; feature UI
-  lives in `src/components/<feature>/` (e.g. `home/`, `layout/`, `auth/`, `fruits/`).
-  Shared chrome controls (icon button, locale menu, theme toggle) live in
-  `src/components/common/`.
+- **Keep route views thin composition surfaces.** A view wires data + children and owns
+  its page-private UI in `src/views/<page>/modules/`. Layout chrome lives with the layout
+  it belongs to (`src/layouts/modules/<module>/`), and only genuinely cross-page reusable
+  components live in `src/components/` (`common/` for shared controls, `advanced/` for
+  reusable primitives such as `page-tab/`). Components follow their narrowest owner — never
+  park layout- or page-specific components in `components/`.
 - Split a component when it owns **3+ UI sections** or has more than one responsibility;
   route views must not embed feature implementations.
 - **Props down, events up.** Type contracts with `defineProps<Props>()` /
@@ -76,7 +78,7 @@ with `<component :is>` and do not add `meta.layout`.
   a view — they belong to the layout. It owns the chrome UI state (drawer open, desktop
   rail, appearance drawer) and passes it down explicitly.
 - **App bar** = `AppHeader.vue`, composition only: each control is a small component under
-  `src/components/layout/header/` (menu/rail toggler, breadcrumb, global search, fullscreen,
+  `src/layouts/modules/header/` (menu/rail toggler, breadcrumb, global search, fullscreen,
   user menu) or `src/components/common/` when reused (icon button, locale menu, theme
   toggle). The app bar never owns layout state — it emits events, `BaseLayout` decides.
 - Breadcrumb (`useBreadcrumb`) and global search (`useNavigation`) derive from the router
@@ -101,10 +103,11 @@ with `<component :is>` and do not add `meta.layout`.
 - Sidebar entries come from route metadata — `meta: { nav: true, titleKey, icon }`; a new
   route with those fields appears in the menu automatically (`useNavigation`). Labels must
   be i18n keys, never hard-coded text.
-- Route-level components live in **`src/views/`** (not `pages/`). To add a view, create it
-  there and register it as a child of the layout that should render it. To add a
+- Route-level components live in **`src/views/<page>/index.vue`** (not `pages/`), with
+  page-private UI under `src/views/<page>/modules/`. To add a view, create that folder and
+  register its `index.vue` as a child of the layout that should render it. To add a
   layout, create `src/layouts/<Name>.vue` (with `<RouterView />`) and add a parent record
-  for it in `src/router/routes.ts`.
+  for it in `src/router/routes.ts`; layout-only modules go in `src/layouts/modules/`.
 - `document.title` is derived from the matched route's `meta.titleKey` in `App.vue`
   (child meta is merged with its parent layout record).
 

@@ -18,7 +18,7 @@
     </template>
 
     <template #subtitle>
-      <div class="leading-7">Change this page by updating <VCode>views/index.vue</VCode>.</div>
+      <div class="leading-7">Change this page by updating <VCode>views/home/index.vue</VCode>.</div>
     </template>
   </VCard>
 </template>

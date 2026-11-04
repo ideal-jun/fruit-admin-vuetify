@@ -2,8 +2,8 @@
 import { computed } from 'vue';
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/components/layout/theme/SettingDivider.vue';
-import SettingItem from '@/components/layout/theme/SettingItem.vue';
+import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
+import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
 import { useThemeStore } from '@/stores/theme';
 import { isWatermarkTimeFormat, WATERMARK_TIME_FORMATS } from '@/theme/appearance';
 

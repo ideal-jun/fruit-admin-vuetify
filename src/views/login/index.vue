@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 
-import LoginCard from '@/components/auth/LoginCard.vue';
 import AppLocaleMenu from '@/components/common/AppLocaleMenu.vue';
 import AppThemeToggle from '@/components/common/AppThemeToggle.vue';
 import { useAuthStore } from '@/stores/auth';
+import LoginCard from '@/views/login/modules/LoginCard.vue';
 
 const router = useRouter();
 const auth = useAuthStore();

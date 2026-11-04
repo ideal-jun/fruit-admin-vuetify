@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { HomeLink } from '@/typings/home';
 
-import HomeFeatureCard from '@/components/home/HomeFeatureCard.vue';
-import HomeHero from '@/components/home/HomeHero.vue';
-import HomeI18nDemo from '@/components/home/HomeI18nDemo.vue';
-import HomeLinkCard from '@/components/home/HomeLinkCard.vue';
+import HomeFeatureCard from '@/views/home/modules/HomeFeatureCard.vue';
+import HomeHero from '@/views/home/modules/HomeHero.vue';
+import HomeI18nDemo from '@/views/home/modules/HomeI18nDemo.vue';
+import HomeLinkCard from '@/views/home/modules/HomeLinkCard.vue';
 
 const links: HomeLink[] = [
   {

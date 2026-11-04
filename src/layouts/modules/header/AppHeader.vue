@@ -5,12 +5,12 @@ import { useLocale } from 'vuetify';
 import AppIconButton from '@/components/common/AppIconButton.vue';
 import AppLocaleMenu from '@/components/common/AppLocaleMenu.vue';
 import AppThemeToggle from '@/components/common/AppThemeToggle.vue';
-import AppBreadcrumb from '@/components/layout/header/AppBreadcrumb.vue';
-import AppFullscreenToggle from '@/components/layout/header/AppFullscreenToggle.vue';
-import AppMenuToggler from '@/components/layout/header/AppMenuToggler.vue';
-import AppSearch from '@/components/layout/header/AppSearch.vue';
-import AppUserMenu from '@/components/layout/header/AppUserMenu.vue';
-import AppTabs from '@/components/layout/tabs/AppTabs.vue';
+import AppBreadcrumb from '@/layouts/modules/header/AppBreadcrumb.vue';
+import AppFullscreenToggle from '@/layouts/modules/header/AppFullscreenToggle.vue';
+import AppMenuToggler from '@/layouts/modules/header/AppMenuToggler.vue';
+import AppSearch from '@/layouts/modules/header/AppSearch.vue';
+import AppUserMenu from '@/layouts/modules/header/AppUserMenu.vue';
+import AppTabs from '@/layouts/modules/tabs/AppTabs.vue';
 import { useThemeStore } from '@/stores/theme';
 
 interface Props {

@@ -5,11 +5,11 @@ import { computed, nextTick, shallowRef, useTemplateRef, watch } from 'vue';
 import { useLocale, useTheme } from 'vuetify';
 
 import AppIconButton from '@/components/common/AppIconButton.vue';
-import AppTabActionsMenu from '@/components/layout/tabs/AppTabActionsMenu.vue';
-import AppTabContextMenu from '@/components/layout/tabs/AppTabContextMenu.vue';
-import AppTabItem from '@/components/layout/tabs/AppTabItem.vue';
 import { useTabMenu } from '@/composables/useTabMenu';
 import { useTabs } from '@/composables/useTabs';
+import AppTabActionsMenu from '@/layouts/modules/tabs/AppTabActionsMenu.vue';
+import AppTabContextMenu from '@/layouts/modules/tabs/AppTabContextMenu.vue';
+import AppTabItem from '@/layouts/modules/tabs/AppTabItem.vue';
 import { useThemeStore } from '@/stores/theme';
 
 /** Pixels of breathing room kept when the active tab is scrolled into view. */

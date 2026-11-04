@@ -207,12 +207,8 @@ const cssVars = computed<PageTabCssVars>(() => createTabCssVars(activeColor));
   right: 7px;
   width: 1px;
   height: 16px;
-  background-color: #1f2225;
+  background-color: var(--page-tab-divider);
   transform: translateY(-50%);
-}
-
-.page-tab--dark .page-tab__divider {
-  background-color: rgb(255 255 255 / 90%);
 }
 
 /* Chrome tab */
@@ -231,28 +227,17 @@ const cssVars = computed<PageTabCssVars>(() => createTabCssVars(activeColor));
   color: var(--page-tab-primary);
 }
 
+/* Same tint Vuetify paints on the active sidebar entry (see pageTabStyles.ts). */
 .page-tab--chrome.page-tab--active .page-tab__bg {
-  color: var(--page-tab-primary-1);
-}
-
-.page-tab--dark.page-tab--chrome.page-tab--active .page-tab__bg {
-  color: var(--page-tab-primary-2);
+  color: var(--page-tab-active-bg);
 }
 
 .page-tab--chrome:hover .page-tab__bg {
-  color: #dee1e6;
+  color: var(--page-tab-hover-bg);
 }
 
 .page-tab--chrome.page-tab--active:hover .page-tab__bg {
-  color: var(--page-tab-primary-1);
-}
-
-.page-tab--dark.page-tab--chrome:hover .page-tab__bg {
-  color: #333333;
-}
-
-.page-tab--dark.page-tab--chrome.page-tab--active:hover .page-tab__bg {
-  color: var(--page-tab-primary-2);
+  color: var(--page-tab-active-bg);
 }
 
 .page-tab--chrome.page-tab--active .page-tab__divider,
@@ -292,11 +277,7 @@ const cssVars = computed<PageTabCssVars>(() => createTabCssVars(activeColor));
 .page-tab--button.page-tab--active {
   color: var(--page-tab-primary);
   border-color: var(--page-tab-primary-opacity-3);
-  background-color: var(--page-tab-primary-opacity-1);
-}
-
-.page-tab--dark.page-tab--button.page-tab--active {
-  background-color: var(--page-tab-primary-opacity-2);
+  background-color: var(--page-tab-active-bg);
 }
 
 .page-tab--button .page-tab__close:hover {
@@ -319,10 +300,6 @@ const cssVars = computed<PageTabCssVars>(() => createTabCssVars(activeColor));
 .page-tab--slider.page-tab--active {
   color: var(--page-tab-primary);
   border-bottom-color: var(--page-tab-primary);
-  background-color: var(--page-tab-primary-opacity-1);
-}
-
-.page-tab--dark.page-tab--slider.page-tab--active {
-  background-color: var(--page-tab-primary-opacity-2);
+  background-color: var(--page-tab-active-bg);
 }
 </style>

@@ -2,10 +2,10 @@
 import { computed, shallowRef, watch } from 'vue';
 import { useDisplay } from 'vuetify';
 
-import AppHeader from '@/components/layout/AppHeader.vue';
-import AppSidebar from '@/components/layout/AppSidebar.vue';
-import AppThemeDrawer from '@/components/layout/AppThemeDrawer.vue';
-import Watermark from '@/components/layout/Watermark.vue';
+import Watermark from '@/components/common/Watermark.vue';
+import AppHeader from '@/layouts/modules/header/AppHeader.vue';
+import AppSidebar from '@/layouts/modules/sider/AppSidebar.vue';
+import AppThemeDrawer from '@/layouts/modules/theme-drawer/AppThemeDrawer.vue';
 import { useThemeStore } from '@/stores/theme';
 
 /**

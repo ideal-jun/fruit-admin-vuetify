@@ -3,7 +3,7 @@ import type { FruitRow } from '@/typings/fruit';
 
 import { useLocale } from 'vuetify';
 
-import FruitsTable from '@/components/fruits/FruitsTable.vue';
+import FruitsTable from '@/views/fruits/modules/FruitsTable.vue';
 
 const { t } = useLocale();
 

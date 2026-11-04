@@ -2,11 +2,11 @@
 import { computed, shallowRef } from 'vue';
 import { useDisplay, useLocale } from 'vuetify';
 
-import ConfigOperation from '@/components/layout/theme/ConfigOperation.vue';
-import AppearanceSettings from '@/components/layout/theme/sections/AppearanceSettings.vue';
-import GeneralSettings from '@/components/layout/theme/sections/GeneralSettings.vue';
-import LayoutSettings from '@/components/layout/theme/sections/LayoutSettings.vue';
-import PresetSettings from '@/components/layout/theme/sections/PresetSettings.vue';
+import ConfigOperation from '@/layouts/modules/theme-drawer/ConfigOperation.vue';
+import AppearanceSettings from '@/layouts/modules/theme-drawer/sections/AppearanceSettings.vue';
+import GeneralSettings from '@/layouts/modules/theme-drawer/sections/GeneralSettings.vue';
+import LayoutSettings from '@/layouts/modules/theme-drawer/sections/LayoutSettings.vue';
+import PresetSettings from '@/layouts/modules/theme-drawer/sections/PresetSettings.vue';
 
 type ThemeDrawerTab = 'appearance' | 'layout' | 'general' | 'preset';
 

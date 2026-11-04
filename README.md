@@ -187,7 +187,7 @@ prefixes such as `md:rounded-xl`):
   `src/styles/vuetify-compat.scss` (they disappear with `$utilities: false`).
 
 `@apply` works inside `<style>` thanks to `@unocss/transformer-directives` — see
-[`src/views/index.vue`](src/views/index.vue) and [`HomeFeatureCard.vue`](src/components/home/HomeFeatureCard.vue).
+[`src/views/home/index.vue`](src/views/home/index.vue) and [`HomeFeatureCard.vue`](src/views/home/modules/HomeFeatureCard.vue).
 
 ```vue
 <template>
@@ -367,15 +367,15 @@ export const routes: RouteRecordRaw[] = [
     path: '/',
     component: BaseLayout,          // shell: drawer + header + <RouterView/>
     children: [
-      { path: '', name: 'home', component: () => import('@/views/index.vue'), ... },
-      { path: 'fruits', name: 'fruits', component: () => import('@/views/fruits.vue'), ... },
+      { path: '', name: 'home', component: () => import('@/views/home/index.vue'), ... },
+      { path: 'fruits', name: 'fruits', component: () => import('@/views/fruits/index.vue'), ... },
     ],
   },
   {
     path: '/',                     // full-screen views share the root path
     component: BlankLayout,         // shell: full-screen <RouterView/>
     children: [
-      { path: 'login', name: 'login', component: () => import('@/views/login.vue'), ... },
+      { path: 'login', name: 'login', component: () => import('@/views/login/index.vue'), ... },
     ],
   },
 ];
@@ -398,24 +398,24 @@ export const routes: RouteRecordRaw[] = [
   and flows down explicitly (props + events to the header, `v-model` to the drawers).
 
 `BlankLayout` details: a single `VMain` with `flex min-h-screen items-center justify-center`;
-the child view owns its full-screen composition ([`login.vue`](src/views/login.vue)).
+the child view owns its full-screen composition ([`login/index.vue`](src/views/login/index.vue)).
 
 ### App bar
 
-[`AppHeader.vue`](src/components/layout/AppHeader.vue) is a composition surface: every control
+[`AppHeader.vue`](src/layouts/modules/header/AppHeader.vue) is a composition surface: every control
 is a small component, so the state stays explicit (props down / events up). Toolbar buttons
 share [`AppIconButton.vue`](src/components/common/AppIconButton.vue) (icon button + tooltip).
 
-| Control             | Component                                                                         | Behaviour                                                                                                                                                             |
-| ------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Menu / rail toggler | [`AppMenuToggler.vue`](src/components/layout/header/AppMenuToggler.vue)           | mobile: opens the temporary drawer · desktop: collapses / expands the sidebar rail                                                                                    |
-| Breadcrumb          | [`AppBreadcrumb.vue`](src/components/layout/header/AppBreadcrumb.vue)             | route-derived (`useBreadcrumb`): breadcrumb on desktop, page title on tablets, hidden on phones                                                                       |
-| Global search       | [`AppSearch.vue`](src/components/layout/header/AppSearch.vue)                     | Vuetify labs **`VCommandPalette`**: `Ctrl/⌘ + K` hotkey, **search-first** (empty until you type), items from `useNavigation()`, built-in filter + keyboard navigation |
-| Fullscreen          | [`AppFullscreenToggle.vue`](src/components/layout/header/AppFullscreenToggle.vue) | Fullscreen API via `useFullscreen()` (desktop only)                                                                                                                   |
-| Language            | [`AppLocaleMenu.vue`](src/components/common/AppLocaleMenu.vue)                    | `VMenu` over `useAppLocale().localeOptions`                                                                                                                           |
-| Theme toggle        | [`AppThemeToggle.vue`](src/components/common/AppThemeToggle.vue)                  | cycles light → dark → system (`useThemeStore().cycleMode`)                                                                                                            |
-| Appearance drawer   | [`AppThemeDrawer.vue`](src/components/layout/AppThemeDrawer.vue)                  | theme mode tabs + primary-color swatches                                                                                                                              |
-| User menu           | [`AppUserMenu.vue`](src/components/layout/header/AppUserMenu.vue)                 | demo auth (`useAuthStore`): sign-in button → `/login`, avatar + sign-out when signed in                                                                               |
+| Control             | Component                                                                       | Behaviour                                                                                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Menu / rail toggler | [`AppMenuToggler.vue`](src/layouts/modules/header/AppMenuToggler.vue)           | mobile: opens the temporary drawer · desktop: collapses / expands the sidebar rail                                                                                    |
+| Breadcrumb          | [`AppBreadcrumb.vue`](src/layouts/modules/header/AppBreadcrumb.vue)             | route-derived (`useBreadcrumb`): breadcrumb on desktop, page title on tablets, hidden on phones                                                                       |
+| Global search       | [`AppSearch.vue`](src/layouts/modules/header/AppSearch.vue)                     | Vuetify labs **`VCommandPalette`**: `Ctrl/⌘ + K` hotkey, **search-first** (empty until you type), items from `useNavigation()`, built-in filter + keyboard navigation |
+| Fullscreen          | [`AppFullscreenToggle.vue`](src/layouts/modules/header/AppFullscreenToggle.vue) | Fullscreen API via `useFullscreen()` (desktop only)                                                                                                                   |
+| Language            | [`AppLocaleMenu.vue`](src/components/common/AppLocaleMenu.vue)                  | `VMenu` over `useAppLocale().localeOptions`                                                                                                                           |
+| Theme toggle        | [`AppThemeToggle.vue`](src/components/common/AppThemeToggle.vue)                | cycles light → dark → system (`useThemeStore().cycleMode`)                                                                                                            |
+| Appearance drawer   | [`AppThemeDrawer.vue`](src/layouts/modules/theme-drawer/AppThemeDrawer.vue)     | theme mode tabs + primary-color swatches                                                                                                                              |
+| User menu           | [`AppUserMenu.vue`](src/layouts/modules/header/AppUserMenu.vue)                 | demo auth (`useAuthStore`): sign-in button → `/login`, avatar + sign-out when signed in                                                                               |
 
 ### Appearance (theme) settings
 
@@ -434,7 +434,7 @@ share [`AppIconButton.vue`](src/components/common/AppIconButton.vue) (icon butto
 ### Demo authentication
 
 [`src/stores/auth.ts`](src/stores/auth.ts) is a minimal demo session (persisted under
-`fruit-admin.user`): `signIn(username)` is called by [`views/login.vue`](src/views/login.vue)
+`fruit-admin.user`): `signIn(username)` is called by [`views/login/index.vue`](src/views/login/index.vue)
 and `signOut()` by the app-bar user menu. Replace both actions with real API calls when wiring
 a backend.
 
@@ -572,12 +572,13 @@ Notes:
 ├─ .agents/skills/            # vendored Vue agent skills (vue-skills bundle)
 ├─ skills-lock.json           # pinned agent-skill sources/versions
 ├─ src/
-│  ├─ components/             # focus-feature components (auth/ common/ fruits/ home/ layout/)
-│  │  └─ layout/              # AppHeader, AppSidebar, AppThemeDrawer + header/ and theme/ modules
+│  ├─ components/             # cross-page reusable components only
+│  │  ├─ advanced/            # generic primitives (page-tab/)
+│  │  └─ common/              # shared controls (icon button, locale, theme, watermark)
 │  ├─ composables/            # useAppLocale, useBreadcrumb, useFullscreen, useNavigation, usePageTitle
-│  ├─ layouts/                # BaseLayout, BlankLayout
+│  ├─ layouts/                # BaseLayout, BlankLayout + modules/ (header, sider, tabs, theme-drawer)
 │  ├─ locales/                # app messages + merged Vuetify translations
-│  ├─ views/                  # route-level views (index, fruits, login)
+│  ├─ views/                  # route views as folders (home/, fruits/, login/) with modules/
 │  ├─ plugins/                # Vuetify, Pinia, i18n, router registration
 │  ├─ router/
 │  ├─ stores/                 # theme.ts (appearance), auth.ts (demo session)

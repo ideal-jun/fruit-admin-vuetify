@@ -28,13 +28,13 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'home',
         name: 'home',
-        component: () => import('@/views/index.vue'),
+        component: () => import('@/views/home/index.vue'),
         meta: { titleKey: 'nav.home', icon: 'mdi-home-outline', nav: true, home: true },
       },
       {
         path: 'fruits',
         name: 'fruits',
-        component: () => import('@/views/fruits.vue'),
+        component: () => import('@/views/fruits/index.vue'),
         meta: { titleKey: 'nav.fruits', icon: 'mdi-fruit-cherries', nav: true },
       },
     ],
@@ -47,7 +47,7 @@ export const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'login',
-        component: () => import('@/views/login.vue'),
+        component: () => import('@/views/login/index.vue'),
         meta: { titleKey: 'views.login.title' },
       },
     ],
