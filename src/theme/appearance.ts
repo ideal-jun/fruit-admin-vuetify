@@ -25,7 +25,7 @@ export const DEFAULT_TAB_MODE: TabMode = 'chrome';
 export const DEFAULT_PAGE_ANIMATE_MODE: PageAnimateMode = 'fade-slide';
 
 /** Vuetify's default light primary, applied to both themes so the app has one brand color. */
-export const DEFAULT_PRIMARY_COLOR = '#1867C0';
+export const DEFAULT_PRIMARY_COLOR = '#646CFF';
 
 /** Vuetify's default border radius root, in pixels. */
 export const DEFAULT_RADIUS = 4;
@@ -47,7 +47,7 @@ export const DEFAULT_WATERMARK_TEXT = 'Fruit Admin';
 
 /** Preset primary colors offered by the appearance drawer. */
 export const PRIMARY_COLOR_SWATCHES: readonly string[] = [
-  '#1867C0',
+  '#646CFF',
   '#3b82f6',
   '#6366f1',
   '#8b5cf6',

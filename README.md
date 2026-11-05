@@ -485,9 +485,13 @@ and mock data. Its table state comes from the ported hooks in
 [`src/composables/useTable.ts`](src/composables/useTable.ts): `useTable` owns rows, loading and
 column checks, while `useTableOperate` owns the add/edit drawer, row selection and delete
 refresh. The view reuses the tab bar, KeepAlive cache (`UsersView`) and theme settings.
-Its route sets `meta.fullHeight`, so the layout hands the view the remaining content height:
-the table card flexes below the search card, scrolls internally and keeps its pagination
-footer visible (the page switches back to normal document scrolling on phones).
+Its frame is the reusable [`TablePageLayout.vue`](src/components/common/TablePageLayout.vue)
+(search card + actions slot + height-filling table card + modals slot), and its toolbar is
+[`TablePageActions.vue`](src/components/common/TablePageActions.vue) (add / batch delete /
+column menu / refresh, with `prepend`/`append` and per-action override slots). The route sets
+`meta.fullHeight`, so the layout hands the view the remaining content height: the table card
+flexes below the search card, scrolls internally and keeps its pagination footer visible (the
+page switches back to normal document scrolling on phones).
 
 ### Adding a view / a layout
 
@@ -616,7 +620,7 @@ Notes:
 ├─ src/
 │  ├─ components/             # cross-page reusable components only
 │  │  ├─ advanced/            # generic primitives (page-tab/)
-│  │  └─ common/              # shared controls (icon button, locale, theme, watermark)
+│  │  └─ common/              # shared controls + TablePageLayout / TablePageActions
 │  ├─ composables/            # useAppLocale, useBreadcrumb, useFullscreen, useNavigation, usePageTitle, useTable
 │  ├─ layouts/                # BaseLayout, BlankLayout + modules/ (header, sider, tabs, theme-drawer)
 │  ├─ locales/                # app messages + merged Vuetify translations

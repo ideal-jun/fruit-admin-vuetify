@@ -6,7 +6,8 @@ import type { DataTableHeader } from 'vuetify';
 import { computed, ref, shallowRef, watch } from 'vue';
 import { useLocale } from 'vuetify';
 
-import AppIconButton from '@/components/common/AppIconButton.vue';
+import TablePageActions from '@/components/common/TablePageActions.vue';
+import TablePageLayout from '@/components/common/TablePageLayout.vue';
 import { useTable, useTableOperate } from '@/composables/useTable';
 import {
   createInitialUsers,
@@ -204,10 +205,8 @@ async function resetSearch() {
   await getData();
 }
 
-function onColumnToggle(key: string, value: unknown) {
-  if (typeof value === 'boolean') {
-    setColumnChecked(key, value);
-  }
+function onColumnToggle(key: string, checked: boolean) {
+  setColumnChecked(key, checked);
 }
 
 function refresh() {
@@ -310,179 +309,97 @@ async function confirmDelete() {
 </script>
 
 <template>
-  <div class="users-page flex flex-col gap-4">
-    <UserSearch
-      v-model:model="searchModel"
-      class="shrink-0"
-      @reset="resetSearch"
-      @search="applySearch"
-    />
+  <TablePageLayout :title="t('views.users.title')">
+    <template #search>
+      <UserSearch v-model:model="searchModel" @reset="resetSearch" @search="applySearch" />
+    </template>
 
-    <VCard
-      border
-      class="users-table-card flex min-h-0 flex-1 flex-col overflow-hidden"
-      variant="flat"
-    >
-      <VCardItem class="shrink-0">
-        <VCardTitle>{{ t('views.users.title') }}</VCardTitle>
-
-        <template #append>
-          <div class="flex items-center gap-1">
-            <VBtn
-              color="primary"
-              prepend-icon="mdi-account-plus-outline"
-              size="small"
-              variant="flat"
-              @click="handleAdd"
-            >
-              {{ t('views.users.addUser') }}
-            </VBtn>
-
-            <VBtn
-              color="error"
-              :disabled="checkedRowKeys.length === 0"
-              prepend-icon="mdi-delete-outline"
-              size="small"
-              variant="text"
-              @click="openBatchDelete"
-            >
-              {{ t('views.users.batchDelete') }}
-            </VBtn>
-
-            <VMenu location="bottom end">
-              <template #activator="{ props: menuProps }">
-                <VBtn
-                  v-bind="menuProps"
-                  :aria-label="t('views.users.columns')"
-                  icon="mdi-view-column-outline"
-                  size="small"
-                  variant="text"
-                />
-              </template>
-
-              <VList density="compact">
-                <VListItem v-for="check in columnChecks" :key="check.key">
-                  <template #prepend>
-                    <VCheckbox
-                      density="compact"
-                      hide-details
-                      :model-value="check.checked"
-                      @update:model-value="onColumnToggle(check.key, $event)"
-                    />
-                  </template>
-                  <VListItemTitle>{{ check.title }}</VListItemTitle>
-                </VListItem>
-              </VList>
-            </VMenu>
-
-            <AppIconButton
-              icon="mdi-refresh"
-              :loading="loading"
-              :tooltip="t('views.users.refresh')"
-              @click="refresh"
-            />
-          </div>
-        </template>
-      </VCardItem>
-
-      <VDivider class="shrink-0" />
-
-      <VDataTable
-        v-model="checkedRowKeys"
-        v-model:items-per-page="pageSize"
-        v-model:page="page"
-        class="users-table min-h-0 flex-1"
-        fixed-header
-        :headers="headers"
-        item-value="id"
-        :items="tableData"
-        :items-per-page-options="[5, 10, 25]"
+    <template #actions>
+      <TablePageActions
+        :column-checks="columnChecks"
+        :delete-disabled="checkedRowKeys.length === 0"
         :loading="loading"
-        :no-data-text="t('views.users.empty')"
-        show-select
-      >
-        <template #item.index="{ index }">
-          {{ (page - 1) * pageSize + index + 1 }}
-        </template>
+        @add="handleAdd"
+        @delete="openBatchDelete"
+        @refresh="refresh"
+        @toggle-column="onColumnToggle"
+      />
+    </template>
 
-        <template #item.userGender="{ item }">
-          <VChip :color="item.userGender === 1 ? 'primary' : 'pink'" size="small" variant="tonal">
-            {{ item.userGender === 1 ? t('views.users.male') : t('views.users.female') }}
+    <VDataTable
+      v-model="checkedRowKeys"
+      v-model:items-per-page="pageSize"
+      v-model:page="page"
+      fixed-header
+      :headers="headers"
+      item-value="id"
+      :items="tableData"
+      :items-per-page-options="[5, 10, 25]"
+      :loading="loading"
+      :no-data-text="t('views.users.empty')"
+      show-select
+    >
+      <template #item.index="{ index }">
+        {{ (page - 1) * pageSize + index + 1 }}
+      </template>
+
+      <template #item.userGender="{ item }">
+        <VChip :color="item.userGender === 1 ? 'primary' : 'pink'" size="small" variant="tonal">
+          {{ item.userGender === 1 ? t('views.users.male') : t('views.users.female') }}
+        </VChip>
+      </template>
+
+      <template #item.status="{ item }">
+        <VChip :color="item.status === 1 ? 'success' : 'warning'" size="small" variant="tonal">
+          {{ statusLabel(item.status) }}
+        </VChip>
+      </template>
+
+      <template #item.roles="{ item }">
+        <div class="flex flex-wrap gap-1">
+          <VChip v-for="code in item.roles" :key="code" size="x-small" variant="outlined">
+            {{ roleLabel(code) }}
           </VChip>
-        </template>
+        </div>
+      </template>
 
-        <template #item.status="{ item }">
-          <VChip :color="item.status === 1 ? 'success' : 'warning'" size="small" variant="tonal">
-            {{ statusLabel(item.status) }}
-          </VChip>
-        </template>
-
-        <template #item.roles="{ item }">
-          <div class="flex flex-wrap gap-1">
-            <VChip v-for="code in item.roles" :key="code" size="x-small" variant="outlined">
-              {{ roleLabel(code) }}
-            </VChip>
-          </div>
-        </template>
-
-        <template #item.actions="{ item }">
-          <div class="flex justify-end gap-1">
-            <VBtn color="primary" size="small" variant="text" @click="handleEdit(item.id)">
-              {{ t('views.users.editUser') }}
-            </VBtn>
-            <VBtn color="error" size="small" variant="text" @click="openDelete(item)">
-              {{ t('views.users.delete') }}
-            </VBtn>
-          </div>
-        </template>
-      </VDataTable>
-    </VCard>
-
-    <UserOperateDrawer
-      v-model:visible="drawerVisible"
-      :operate-type="operateType"
-      :user="editingData"
-      @save="saveUser"
-    />
-
-    <VDialog v-model="confirmOpen" max-width="420">
-      <VCard>
-        <VCardTitle>{{ t('views.users.confirmDeleteTitle') }}</VCardTitle>
-        <VCardText>{{ deleteMessage }}</VCardText>
-        <VCardActions>
-          <VSpacer />
-          <VBtn variant="text" @click="confirmOpen = false">
-            {{ t('views.users.cancel') }}
+      <template #item.actions="{ item }">
+        <div class="flex justify-end gap-1">
+          <VBtn color="primary" size="small" variant="text" @click="handleEdit(item.id)">
+            {{ t('views.users.editUser') }}
           </VBtn>
-          <VBtn color="error" variant="flat" @click="confirmDelete">
-            {{ t('views.users.confirm') }}
+          <VBtn color="error" size="small" variant="text" @click="openDelete(item)">
+            {{ t('views.users.delete') }}
           </VBtn>
-        </VCardActions>
-      </VCard>
-    </VDialog>
+        </div>
+      </template>
+    </VDataTable>
 
-    <VSnackbar v-model="snackbarOpen" :text="snackbarText" timeout="2000" />
-  </div>
+    <template #modals>
+      <UserOperateDrawer
+        v-model:visible="drawerVisible"
+        :operate-type="operateType"
+        :user="editingData"
+        @save="saveUser"
+      />
+
+      <VDialog v-model="confirmOpen" max-width="420">
+        <VCard>
+          <VCardTitle>{{ t('views.users.confirmDeleteTitle') }}</VCardTitle>
+          <VCardText>{{ deleteMessage }}</VCardText>
+          <VCardActions>
+            <VSpacer />
+            <VBtn variant="text" @click="confirmOpen = false">
+              {{ t('views.users.cancel') }}
+            </VBtn>
+            <VBtn color="error" variant="flat" @click="confirmDelete">
+              {{ t('views.users.confirm') }}
+            </VBtn>
+          </VCardActions>
+        </VCard>
+      </VDialog>
+
+      <VSnackbar v-model="snackbarOpen" :text="snackbarText" timeout="2000" />
+    </template>
+  </TablePageLayout>
 </template>
-
-<style scoped>
-/* Fill the VMain scroller: BaseLayout gives VContainer `h-full`, so the page can use the
-   remaining height and the table card flexes below the search card. */
-.users-page {
-  height: 100%;
-  min-height: 0;
-}
-
-/* On phones the reference page scrolls as a whole instead of squeezing the table. */
-@media (max-width: 600px) {
-  .users-page {
-    height: auto;
-    min-height: 0;
-  }
-
-  .users-table-card,
-  .users-table {
-    flex: 0 0 auto;
-  }
-}
-</style>

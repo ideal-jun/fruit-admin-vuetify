@@ -39,6 +39,12 @@ export interface AppMessages {
     searchEmpty: string;
     searchPrompt: string;
     searchHint: string;
+    tableActions: {
+      add: string;
+      batchDelete: string;
+      columns: string;
+      refresh: string;
+    };
     fullscreen: string;
     exitFullscreen: string;
     contentFullscreen: string;
@@ -170,8 +176,6 @@ export interface AppMessages {
       editUser: string;
       search: string;
       reset: string;
-      refresh: string;
-      columns: string;
       add: string;
       delete: string;
       batchDelete: string;

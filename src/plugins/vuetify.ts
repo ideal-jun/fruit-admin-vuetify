@@ -13,10 +13,51 @@ export default createVuetify({
     adapter: createVueI18nAdapter({ i18n, useI18n }),
     fallback: 'en',
   },
+  defaults: {
+    VCard: {
+      elevation: 1,
+    },
+    VSheet: {
+      elevation: 1,
+    },
+    VTextField: {
+      color: 'primary',
+      density: 'compact',
+      variant: 'outlined',
+    },
+    VCheckbox: {
+      color: 'primary',
+      density: 'compact',
+      variant: 'outlined',
+    },
+
+    VCheckboxBtn: {
+      color: 'primary',
+      density: 'compact',
+      variant: 'outlined',
+    },
+    VRadio: {
+      color: 'primary',
+      density: 'compact',
+      variant: 'outlined',
+    },
+    VSelect: {
+      color: 'primary',
+      density: 'compact',
+      variant: 'outlined',
+    },
+    VSwitch: {
+      color: 'primary',
+      density: 'compact',
+    },
+  },
   theme: {
     defaultTheme: 'system',
     themes: {
       light: {
+        colors: {
+          background: '#f5f9fb',
+        },
         variables: {
           'high-emphasis-opacity': 0.82,
           'medium-emphasis-opacity': 0.6,

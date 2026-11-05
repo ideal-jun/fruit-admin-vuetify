@@ -43,14 +43,14 @@ function reset() {
 </script>
 
 <template>
-  <VCard border variant="flat">
-    <VExpansionPanels v-model="openPanels" variant="accordion">
-      <VExpansionPanel value="search">
+  <VSheet elevation="1" rounded="lg">
+    <VExpansionPanels v-model="openPanels" elevation="0" :hover="false" static>
+      <VExpansionPanel :ripple="false" value="search">
         <VExpansionPanelTitle>{{ t('views.users.search') }}</VExpansionPanelTitle>
 
         <VExpansionPanelText>
           <VForm @submit.prevent="emit('search')">
-            <VRow>
+            <VRow density="compact">
               <VCol cols="12" md="6" sm="6">
                 <VTextField
                   v-model="model.username"
@@ -125,7 +125,7 @@ function reset() {
             </VRow>
 
             <div class="mt-3 flex justify-end gap-2">
-              <VBtn prepend-icon="mdi-refresh" type="button" variant="text" @click="reset">
+              <VBtn prepend-icon="mdi-refresh" variant="outlined" @click="reset">
                 {{ t('views.users.reset') }}
               </VBtn>
               <VBtn color="primary" prepend-icon="mdi-magnify" type="submit" variant="flat">
@@ -136,5 +136,5 @@ function reset() {
         </VExpansionPanelText>
       </VExpansionPanel>
     </VExpansionPanels>
-  </VCard>
+  </VSheet>
 </template>

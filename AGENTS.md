@@ -58,6 +58,11 @@ components:
   loading, column checks and the fetch lifecycle; `useTableOperate` owns the add/edit drawer,
   row selection and delete refresh. Pages supply the API, the transform and their concrete
   column/header shape.
+- Shared page scaffolds belong in `src/components/common/` too: `TablePageLayout` composes the
+  search card, title/actions header, height-filling table card and an overlays/modals slot for
+  management pages (pair it with the route's `meta.fullHeight`). `TablePageActions` supplies the
+  standard add/batch-delete/column-menu/refresh toolbar and exposes `prepend`/`append` plus
+  per-action slots (`add`, `delete`, `columns`, `refresh`) for custom buttons.
 - **Props down, events up.** Type contracts with `defineProps<Props>()` /
   `defineEmits<Emits>()`; use `defineModel<T>()` for genuine two-way bindings; prefer
   Vue 3.5 reactive props destructure (`const { x = fallback } = defineProps<Props>()`)
