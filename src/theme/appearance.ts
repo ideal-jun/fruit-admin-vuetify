@@ -8,6 +8,7 @@ import type {
   TabMode,
   TabSettings,
   ThemeMode,
+  ThemeOtherColors,
   WatermarkSettings,
   WatermarkTimeFormat,
 } from '@/typings/theme';
@@ -26,6 +27,14 @@ export const DEFAULT_PAGE_ANIMATE_MODE: PageAnimateMode = 'fade-slide';
 
 /** Vuetify's default light primary, applied to both themes so the app has one brand color. */
 export const DEFAULT_PRIMARY_COLOR = '#646CFF';
+
+/** Secondary semantic colors, matching the reference theme palette. */
+export const DEFAULT_OTHER_COLORS: ThemeOtherColors = {
+  info: '#2080F0',
+  success: '#18A058',
+  warning: '#F0A020',
+  error: '#D03050',
+};
 
 /** Default border radius root, in pixels. */
 export const DEFAULT_RADIUS = 8;
@@ -130,6 +139,9 @@ export const DEFAULT_WATERMARK_SETTINGS: WatermarkSettings = {
 export const DEFAULT_APPEARANCE_SETTINGS: AppearanceSettings = {
   mode: DEFAULT_THEME_MODE,
   primary: DEFAULT_PRIMARY_COLOR,
+  otherColors: DEFAULT_OTHER_COLORS,
+  recommendColor: false,
+  isInfoFollowPrimary: true,
   radius: DEFAULT_RADIUS,
   grayscale: false,
   colourWeakness: false,
@@ -253,6 +265,17 @@ function readSiderSettings(value: unknown): SiderSettings {
   };
 }
 
+function readOtherColors(value: unknown): ThemeOtherColors {
+  const raw = isRecord(value) ? value : {};
+
+  return {
+    info: isHexColor(raw.info) ? raw.info : DEFAULT_OTHER_COLORS.info,
+    success: isHexColor(raw.success) ? raw.success : DEFAULT_OTHER_COLORS.success,
+    warning: isHexColor(raw.warning) ? raw.warning : DEFAULT_OTHER_COLORS.warning,
+    error: isHexColor(raw.error) ? raw.error : DEFAULT_OTHER_COLORS.error,
+  };
+}
+
 function readWatermarkSettings(value: unknown): WatermarkSettings {
   const raw = isRecord(value) ? value : {};
 
@@ -289,7 +312,10 @@ export function readAppearanceSettings(): AppearanceSettings {
     return {
       mode: isThemeMode(parsed.mode) ? parsed.mode : DEFAULT_THEME_MODE,
       primary: isHexColor(parsed.primary) ? parsed.primary : DEFAULT_PRIMARY_COLOR,
-      radius: readNumber(parsed.radius, DEFAULT_RADIUS, 0, 24),
+      otherColors: readOtherColors(parsed.otherColors),
+      recommendColor: readBoolean(parsed.recommendColor, false),
+      isInfoFollowPrimary: readBoolean(parsed.isInfoFollowPrimary, true),
+      radius: readNumber(parsed.radius, DEFAULT_RADIUS, 0, 16),
       grayscale: readBoolean(parsed.grayscale, false),
       colourWeakness: readBoolean(parsed.colourWeakness, false),
       // The flat `tabMode` key is the pre-port format; keep reading it for older sessions.

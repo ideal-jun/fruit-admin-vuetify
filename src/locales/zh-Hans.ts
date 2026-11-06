@@ -68,6 +68,16 @@ const messages: AppMessages = {
     },
     appearance: {
       title: '外观设置',
+      recommendColor: '推荐色',
+      color: {
+        title: '主题色',
+        primary: '主色',
+        info: '信息色',
+        success: '成功色',
+        warning: '警告色',
+        error: '错误色',
+        followPrimary: '跟随主色',
+      },
       radius: '圆角',
       grayscale: '灰度模式',
       colourWeakness: '色弱模式',

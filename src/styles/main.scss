@@ -7,3 +7,22 @@
     font-family: var(--font-mono);
   }
 }
+
+/* Animated rows for conditionally visible theme-drawer settings. */
+@layer vuetify-final {
+  .settings-list-move,
+  .settings-list-enter-active,
+  .settings-list-leave-active {
+    transition: all 0.3s;
+  }
+
+  .settings-list-enter-from,
+  .settings-list-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  .settings-list-leave-active {
+    position: absolute;
+  }
+}

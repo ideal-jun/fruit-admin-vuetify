@@ -68,6 +68,16 @@ const messages: AppMessages = {
     },
     appearance: {
       title: 'Appearance',
+      recommendColor: 'Recommended color',
+      color: {
+        title: 'Theme colors',
+        primary: 'Primary',
+        info: 'Info',
+        success: 'Success',
+        warning: 'Warning',
+        error: 'Error',
+        followPrimary: 'Follow primary',
+      },
       radius: 'Corner radius',
       grayscale: 'Grayscale',
       colourWeakness: 'Colour weakness',

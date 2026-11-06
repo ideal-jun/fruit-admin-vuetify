@@ -31,22 +31,6 @@ function onColourWeaknessChange(value: unknown) {
 <template>
   <div class="flex flex-col gap-4">
     <ThemeModePicker />
-    <ThemeColorPicker />
-
-    <SettingsItem :label="t('theme.appearance.radius')">
-      <VNumberInput
-        control-variant="stacked"
-        density="compact"
-        hide-details
-        :max="24"
-        max-width="160"
-        :min="0"
-        :model-value="themeStore.radius"
-        :step="1"
-        variant="outlined"
-        @update:model-value="onRadiusChange"
-      />
-    </SettingsItem>
 
     <SettingsItem :label="t('theme.appearance.grayscale')">
       <VSwitch
@@ -65,6 +49,23 @@ function onColourWeaknessChange(value: unknown) {
         hide-details
         :model-value="themeStore.colourWeakness"
         @update:model-value="onColourWeaknessChange"
+      />
+    </SettingsItem>
+
+    <ThemeColorPicker />
+
+    <SettingsItem :label="t('theme.appearance.radius')">
+      <VNumberInput
+        control-variant="stacked"
+        density="compact"
+        hide-details
+        :max="16"
+        max-width="160"
+        :min="0"
+        :model-value="themeStore.radius"
+        :step="1"
+        variant="outlined"
+        @update:model-value="onRadiusChange"
       />
     </SettingsItem>
   </div>

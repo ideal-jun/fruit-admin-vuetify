@@ -5,6 +5,8 @@ import type {
   PageSettings,
   TabMode,
   TabSettings,
+  ThemeColorKey,
+  ThemeColors,
   ThemeMode,
   ThemeSettingsPatch,
   WatermarkSettings,
@@ -21,6 +23,7 @@ import {
   THEME_MODES,
   writeAppearanceSettings,
 } from '@/theme/appearance';
+import { getPaletteColorByNumber } from '@/utils/color';
 
 /** Partial header settings, with the nested breadcrumb patchable on its own. */
 type HeaderSettingsPatch = Partial<Omit<HeaderSettings, 'breadcrumb'>> & {
@@ -32,6 +35,9 @@ function mergeSettings(base: AppearanceSettings, patch: ThemeSettingsPatch): App
   return {
     mode: patch.mode ?? base.mode,
     primary: patch.primary ?? base.primary,
+    otherColors: { ...base.otherColors, ...patch.otherColors },
+    recommendColor: patch.recommendColor ?? base.recommendColor,
+    isInfoFollowPrimary: patch.isInfoFollowPrimary ?? base.isInfoFollowPrimary,
     radius: patch.radius ?? base.radius,
     grayscale: patch.grayscale ?? base.grayscale,
     colourWeakness: patch.colourWeakness ?? base.colourWeakness,
@@ -64,6 +70,17 @@ export const useThemeStore = defineStore('theme', () => {
 
   const mode = computed(() => settings.value.mode);
   const primary = computed(() => settings.value.primary);
+  const otherColors = computed(() => settings.value.otherColors);
+  const recommendColor = computed(() => settings.value.recommendColor);
+  const isInfoFollowPrimary = computed(() => settings.value.isInfoFollowPrimary);
+  /** Effective Vuetify colors; info follows primary when that setting is enabled. */
+  const themeColors = computed<ThemeColors>(() => ({
+    primary: settings.value.primary,
+    ...settings.value.otherColors,
+    info: settings.value.isInfoFollowPrimary
+      ? settings.value.primary
+      : settings.value.otherColors.info,
+  }));
   const radius = computed(() => settings.value.radius);
   const grayscale = computed(() => settings.value.grayscale);
   const colourWeakness = computed(() => settings.value.colourWeakness);
@@ -83,7 +100,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   function applyColors() {
     for (const definition of Object.values(theme.themes.value)) {
-      definition.colors.primary = settings.value.primary;
+      Object.assign(definition.colors, themeColors.value);
     }
   }
 
@@ -121,8 +138,34 @@ export const useThemeStore = defineStore('theme', () => {
     update({ ...settings.value, mode: value });
   }
 
+  /** Apply the optional recommended-palette saturation before storing a color. */
+  function resolveThemeColor(value: string): string {
+    return settings.value.recommendColor ? getPaletteColorByNumber(value, 500, true) : value;
+  }
+
+  function updateThemeColor(key: ThemeColorKey, value: string) {
+    const color = resolveThemeColor(value);
+
+    if (key === 'primary') {
+      update({ ...settings.value, primary: color });
+    } else {
+      update({
+        ...settings.value,
+        otherColors: { ...settings.value.otherColors, [key]: color },
+      });
+    }
+  }
+
   function setPrimary(value: string) {
-    update({ ...settings.value, primary: value });
+    updateThemeColor('primary', value);
+  }
+
+  function setRecommendColor(value: boolean) {
+    update({ ...settings.value, recommendColor: value });
+  }
+
+  function setInfoFollowPrimary(value: boolean) {
+    update({ ...settings.value, isInfoFollowPrimary: value });
   }
 
   function setRadius(value: number) {
@@ -199,6 +242,10 @@ export const useThemeStore = defineStore('theme', () => {
     settingsJson,
     mode,
     primary,
+    otherColors,
+    recommendColor,
+    isInfoFollowPrimary,
+    themeColors,
     radius,
     grayscale,
     colourWeakness,
@@ -210,6 +257,9 @@ export const useThemeStore = defineStore('theme', () => {
     watermark,
     setMode,
     setPrimary,
+    setRecommendColor,
+    setInfoFollowPrimary,
+    updateThemeColor,
     setRadius,
     setGrayscale,
     setColourWeakness,

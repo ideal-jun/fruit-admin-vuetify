@@ -114,8 +114,8 @@ function setSiderCollapsedWidth(value: number | null) {
   <div class="flex flex-col gap-4">
     <SettingsDivider :title="t('theme.layout.title')" />
 
-    <div class="flex flex-col gap-3">
-      <SettingsItem :label="t('theme.layout.tabVisible')">
+    <TransitionGroup class="relative flex flex-col gap-3" name="settings-list" tag="div">
+      <SettingsItem key="tab-visible" :label="t('theme.layout.tabVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -126,7 +126,7 @@ function setSiderCollapsedWidth(value: number | null) {
       </SettingsItem>
 
       <template v-if="themeStore.tab.visible">
-        <SettingsItem :label="t('theme.layout.tabCache')">
+        <SettingsItem key="tab-cache" :label="t('theme.layout.tabCache')">
           <VSwitch
             color="primary"
             density="compact"
@@ -136,7 +136,7 @@ function setSiderCollapsedWidth(value: number | null) {
           />
         </SettingsItem>
 
-        <SettingsItem :label="t('theme.layout.tabHeight')">
+        <SettingsItem key="tab-height" :label="t('theme.layout.tabHeight')">
           <VNumberInput
             control-variant="stacked"
             density="compact"
@@ -151,7 +151,7 @@ function setSiderCollapsedWidth(value: number | null) {
           />
         </SettingsItem>
 
-        <SettingsItem :label="t('theme.layout.tabStyle')">
+        <SettingsItem key="tab-style" :label="t('theme.layout.tabStyle')">
           <VSelect
             density="compact"
             hide-details
@@ -165,7 +165,7 @@ function setSiderCollapsedWidth(value: number | null) {
           />
         </SettingsItem>
 
-        <SettingsItem :label="t('theme.layout.closeTabByMiddleClick')">
+        <SettingsItem key="tab-middle-click" :label="t('theme.layout.closeTabByMiddleClick')">
           <VSwitch
             color="primary"
             density="compact"
@@ -175,12 +175,12 @@ function setSiderCollapsedWidth(value: number | null) {
           />
         </SettingsItem>
       </template>
-    </div>
+    </TransitionGroup>
 
     <SettingsDivider :title="t('theme.layout.pageTitle')" />
 
-    <div class="flex flex-col gap-3">
-      <SettingsItem :label="t('theme.layout.pageAnimate')">
+    <TransitionGroup class="relative flex flex-col gap-3" name="settings-list" tag="div">
+      <SettingsItem key="page-animate" :label="t('theme.layout.pageAnimate')">
         <VSwitch
           color="primary"
           density="compact"
@@ -190,7 +190,11 @@ function setSiderCollapsedWidth(value: number | null) {
         />
       </SettingsItem>
 
-      <SettingsItem v-if="themeStore.page.animate" :label="t('theme.layout.pageAnimateMode')">
+      <SettingsItem
+        v-if="themeStore.page.animate"
+        key="page-animate-mode"
+        :label="t('theme.layout.pageAnimateMode')"
+      >
         <VSelect
           density="compact"
           hide-details
@@ -203,12 +207,12 @@ function setSiderCollapsedWidth(value: number | null) {
           @update:model-value="setPageAnimateMode"
         />
       </SettingsItem>
-    </div>
+    </TransitionGroup>
 
     <SettingsDivider :title="t('theme.layout.headerTitle')" />
 
-    <div class="flex flex-col gap-3">
-      <SettingsItem :label="t('theme.layout.headerHeight')">
+    <TransitionGroup class="relative flex flex-col gap-3" name="settings-list" tag="div">
+      <SettingsItem key="header-height" :label="t('theme.layout.headerHeight')">
         <VNumberInput
           control-variant="stacked"
           density="compact"
@@ -223,7 +227,7 @@ function setSiderCollapsedWidth(value: number | null) {
         />
       </SettingsItem>
 
-      <SettingsItem :label="t('theme.layout.breadcrumbVisible')">
+      <SettingsItem key="breadcrumb-visible" :label="t('theme.layout.breadcrumbVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -233,7 +237,11 @@ function setSiderCollapsedWidth(value: number | null) {
         />
       </SettingsItem>
 
-      <SettingsItem v-if="showBreadcrumbIcon" :label="t('theme.layout.breadcrumbShowIcon')">
+      <SettingsItem
+        v-if="showBreadcrumbIcon"
+        key="breadcrumb-show-icon"
+        :label="t('theme.layout.breadcrumbShowIcon')"
+      >
         <VSwitch
           color="primary"
           density="compact"
@@ -242,7 +250,7 @@ function setSiderCollapsedWidth(value: number | null) {
           @update:model-value="setBreadcrumbShowIcon"
         />
       </SettingsItem>
-    </div>
+    </TransitionGroup>
 
     <SettingsDivider :title="t('theme.layout.siderTitle')" />
 

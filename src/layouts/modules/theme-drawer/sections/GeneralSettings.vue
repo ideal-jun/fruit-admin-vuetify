@@ -108,8 +108,8 @@ function setWatermarkTimeFormat(value: unknown) {
 
     <SettingsDivider :title="t('theme.general.watermarkTitle')" />
 
-    <div class="flex flex-col gap-3">
-      <SettingsItem :label="t('theme.general.watermarkVisible')">
+    <TransitionGroup class="relative flex flex-col gap-3" name="settings-list" tag="div">
+      <SettingsItem key="watermark-visible" :label="t('theme.general.watermarkVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -120,7 +120,7 @@ function setWatermarkTimeFormat(value: unknown) {
       </SettingsItem>
 
       <template v-if="themeStore.watermark.visible">
-        <SettingsItem :label="t('theme.general.watermarkUserName')">
+        <SettingsItem key="watermark-user-name" :label="t('theme.general.watermarkUserName')">
           <VSwitch
             color="primary"
             density="compact"
@@ -130,7 +130,7 @@ function setWatermarkTimeFormat(value: unknown) {
           />
         </SettingsItem>
 
-        <SettingsItem :label="t('theme.general.watermarkTime')">
+        <SettingsItem key="watermark-time" :label="t('theme.general.watermarkTime')">
           <VSwitch
             color="primary"
             density="compact"
@@ -142,6 +142,7 @@ function setWatermarkTimeFormat(value: unknown) {
 
         <SettingsItem
           v-if="showWatermarkTimeFormat"
+          key="watermark-time-format"
           :label="t('theme.general.watermarkTimeFormat')"
         >
           <VSelect
@@ -157,7 +158,11 @@ function setWatermarkTimeFormat(value: unknown) {
           />
         </SettingsItem>
 
-        <SettingsItem v-if="showWatermarkText" :label="t('theme.general.watermarkText')">
+        <SettingsItem
+          v-if="showWatermarkText"
+          key="watermark-text"
+          :label="t('theme.general.watermarkText')"
+        >
           <VTextField
             density="compact"
             hide-details
@@ -168,6 +173,6 @@ function setWatermarkTimeFormat(value: unknown) {
           />
         </SettingsItem>
       </template>
-    </div>
+    </TransitionGroup>
   </div>
 </template>

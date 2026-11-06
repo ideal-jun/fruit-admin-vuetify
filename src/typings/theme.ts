@@ -7,6 +7,22 @@ export type TabMode = 'chrome' | 'button' | 'slider';
 /** Route switch animations, each mapped to a Vuetify transition component. */
 export type PageAnimateMode = 'fade' | 'fade-slide' | 'fade-bottom' | 'fade-scale';
 
+/** Semantic colors configurable from the appearance drawer. */
+export type ThemeColorKey = 'primary' | 'info' | 'success' | 'warning' | 'error';
+
+/** The four secondary theme colors (primary is stored separately for legacy compatibility). */
+export interface ThemeOtherColors {
+  readonly info: string;
+  readonly success: string;
+  readonly warning: string;
+  readonly error: string;
+}
+
+/** Effective Vuetify theme colors, with info possibly following primary. */
+export interface ThemeColors extends ThemeOtherColors {
+  readonly primary: string;
+}
+
 /** Time formats offered for the content watermark. */
 export type WatermarkTimeFormat =
   | 'YYYY-MM-DD HH:mm'
@@ -78,6 +94,11 @@ export interface WatermarkSettings {
 export interface AppearanceSettings {
   readonly mode: ThemeMode;
   readonly primary: string;
+  readonly otherColors: ThemeOtherColors;
+  /** Generate a recommended palette color from a user-picked color. */
+  readonly recommendColor: boolean;
+  /** Make the info color follow primary. */
+  readonly isInfoFollowPrimary: boolean;
   /** Vuetify border radius root, in pixels. */
   readonly radius: number;
   readonly grayscale: boolean;
@@ -93,6 +114,9 @@ export interface AppearanceSettings {
 export interface ThemeSettingsPatch {
   readonly mode?: ThemeMode;
   readonly primary?: string;
+  readonly otherColors?: Partial<ThemeOtherColors>;
+  readonly recommendColor?: boolean;
+  readonly isInfoFollowPrimary?: boolean;
   readonly radius?: number;
   readonly grayscale?: boolean;
   readonly colourWeakness?: boolean;

@@ -83,6 +83,16 @@ export interface AppMessages {
     };
     appearance: {
       title: string;
+      recommendColor: string;
+      color: {
+        title: string;
+        primary: string;
+        info: string;
+        success: string;
+        warning: string;
+        error: string;
+        followPrimary: string;
+      };
       radius: string;
       grayscale: string;
       colourWeakness: string;
