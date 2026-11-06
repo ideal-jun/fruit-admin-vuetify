@@ -13,12 +13,12 @@ const { title, fillHeight = true } = defineProps<Props>();
 </script>
 
 <template>
-  <div class="table-page" :class="{ 'table-page--fill': fillHeight }">
+  <div class="page-table" :class="{ 'page-table--fill': fillHeight }">
     <div v-if="$slots.search" class="shrink-0">
       <slot name="search" />
     </div>
 
-    <VCard class="table-page__card flex min-h-0 flex-1 flex-col overflow-hidden" elevation="1">
+    <VCard class="page-table__card flex min-h-0 flex-1 flex-col overflow-hidden" elevation="1">
       <VCardItem class="shrink-0">
         <VCardTitle>{{ title }}</VCardTitle>
 
@@ -31,7 +31,7 @@ const { title, fillHeight = true } = defineProps<Props>();
 
       <VDivider class="shrink-0" />
 
-      <div class="table-page__content flex min-h-0 flex-1 flex-col">
+      <div class="page-table__content flex min-h-0 flex-1 flex-col">
         <slot />
       </div>
     </VCard>
@@ -42,32 +42,32 @@ const { title, fillHeight = true } = defineProps<Props>();
 </template>
 
 <style scoped>
-.table-page {
+.page-table {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.table-page--fill {
+.page-table--fill {
   height: 100%;
   min-height: 0;
 }
 
 /* The default slot is expected to be a single table-like root: let it own the rest of
    the card and scroll internally (VDataTable already renders a flex column wrapper). */
-.table-page__content > :deep(*) {
+.page-table__content > :deep(*) {
   flex: 1 1 auto;
   min-height: 0;
 }
 
 /* On phones the reference page scrolls as a whole instead of squeezing the table. */
 @media (max-width: 600px) {
-  .table-page--fill {
+  .page-table--fill {
     height: auto;
   }
 
-  .table-page__card,
-  .table-page__content {
+  .page-table__card,
+  .page-table__content {
     flex: 0 0 auto;
   }
 }

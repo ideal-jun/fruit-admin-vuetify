@@ -52,15 +52,21 @@ components:
   components live in `src/components/` (`common/` for shared controls, `advanced/` for
   reusable primitives such as `page-tab/`). Components follow their narrowest owner — never
   park layout- or page-specific components in `components/`.
+- **Component naming** follows `<Scope><Feature><Role>.vue`: `App*` only for app shell /
+  global chrome (`AppHeader`, `AppGlobalSearch`, `AppWatermark`), `Page*` for cross-page
+  page scaffolds (`PageTableLayout`, `PageTableToolbar`), and `<Domain>*` for page-private
+  modules (`UserSearch`, `UserFormDrawer`). Use a role suffix (`Layout`, `Toolbar`, `Drawer`,
+  `Menu`, `Toggle`, `Picker`, `Item`, `Divider`, `Card`) and avoid verbs/abbreviations
+  (`UserFormDrawer`, not `UserOperateDrawer`; `TabChromeBackground`, not `ChromeTabBg`).
 - Split a component when it owns **3+ UI sections** or has more than one responsibility;
   route views must not embed feature implementations.
 - Reusable data-table state belongs in `src/composables/useTable.ts`: `useTable` owns rows,
   loading, column checks and the fetch lifecycle; `useTableOperate` owns the add/edit drawer,
   row selection and delete refresh. Pages supply the API, the transform and their concrete
   column/header shape.
-- Shared page scaffolds belong in `src/components/common/` too: `TablePageLayout` composes the
+- Shared page scaffolds belong in `src/components/common/` too: `PageTableLayout` composes the
   search card, title/actions header, height-filling table card and an overlays/modals slot for
-  management pages (pair it with the route's `meta.fullHeight`). `TablePageActions` supplies the
+  management pages (pair it with the route's `meta.fullHeight`). `PageTableToolbar` supplies the
   standard add/batch-delete/column-menu/refresh toolbar and exposes `prepend`/`append` plus
   per-action slots (`add`, `delete`, `columns`, `refresh`) for custom buttons.
 - **Props down, events up.** Type contracts with `defineProps<Props>()` /

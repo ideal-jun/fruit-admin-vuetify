@@ -413,9 +413,9 @@ share [`AppIconButton.vue`](src/components/common/AppIconButton.vue) (icon butto
 
 | Control             | Component                                                                       | Behaviour                                                                                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Menu / rail toggler | [`AppMenuToggler.vue`](src/layouts/modules/header/AppMenuToggler.vue)           | mobile: opens the temporary drawer · desktop: collapses / expands the sidebar rail                                                                                    |
+| Menu / rail toggler | [`AppMenuToggle.vue`](src/layouts/modules/header/AppMenuToggle.vue)             | mobile: opens the temporary drawer · desktop: collapses / expands the sidebar rail                                                                                    |
 | Breadcrumb          | [`AppBreadcrumb.vue`](src/layouts/modules/header/AppBreadcrumb.vue)             | route-derived (`useBreadcrumb`): breadcrumb on desktop, page title on tablets, hidden on phones                                                                       |
-| Global search       | [`AppSearch.vue`](src/layouts/modules/header/AppSearch.vue)                     | Vuetify labs **`VCommandPalette`**: `Ctrl/⌘ + K` hotkey, **search-first** (empty until you type), items from `useNavigation()`, built-in filter + keyboard navigation |
+| Global search       | [`AppGlobalSearch.vue`](src/layouts/modules/header/AppGlobalSearch.vue)         | Vuetify labs **`VCommandPalette`**: `Ctrl/⌘ + K` hotkey, **search-first** (empty until you type), items from `useNavigation()`, built-in filter + keyboard navigation |
 | Fullscreen          | [`AppFullscreenToggle.vue`](src/layouts/modules/header/AppFullscreenToggle.vue) | Fullscreen API via `useFullscreen()` (desktop only)                                                                                                                   |
 | Language            | [`AppLocaleMenu.vue`](src/components/common/AppLocaleMenu.vue)                  | `VMenu` over `useAppLocale().localeOptions`                                                                                                                           |
 | Theme toggle        | [`AppThemeToggle.vue`](src/components/common/AppThemeToggle.vue)                | cycles light → dark → system (`useThemeStore().cycleMode`)                                                                                                            |
@@ -443,7 +443,7 @@ persisted under `fruit-admin.tabs`.
   view from the cache, so it mounts with fresh state next time. The "cache tabs" setting
   (`themeStore.tab.cache`) disables both tab restore and view caching.
 - The rendering primitives are generic: [`PageTab.vue`](src/components/advanced/page-tab/PageTab.vue),
-  `ChromeTabBg.vue` and `pageTabStyles.ts` live in `src/components/advanced/page-tab/`.
+  `TabChromeBackground.vue` and `pageTabStyles.ts` live in `src/components/advanced/page-tab/`.
 
 ### Appearance (theme) settings
 
@@ -493,9 +493,9 @@ and mock data. Its table state comes from the ported hooks in
 [`src/composables/useTable.ts`](src/composables/useTable.ts): `useTable` owns rows, loading and
 column checks, while `useTableOperate` owns the add/edit drawer, row selection and delete
 refresh. The view reuses the tab bar, KeepAlive cache (`UsersView`) and theme settings.
-Its frame is the reusable [`TablePageLayout.vue`](src/components/common/TablePageLayout.vue)
+Its frame is the reusable [`PageTableLayout.vue`](src/components/common/PageTableLayout.vue)
 (search card + actions slot + height-filling table card + modals slot), and its toolbar is
-[`TablePageActions.vue`](src/components/common/TablePageActions.vue) (add / batch delete /
+[`PageTableToolbar.vue`](src/components/common/PageTableToolbar.vue) (add / batch delete /
 column menu / refresh, with `prepend`/`append` and per-action override slots). The route sets
 `meta.fullHeight`, so the layout hands the view the remaining content height: the table card
 flexes below the search card, scrolls internally and keeps its pagination footer visible (the
@@ -532,6 +532,10 @@ Oxlint already covers, so nothing is reported twice.
   is configured with `registeredComponentsOnly: false`, so globally registered components
   are checked too (they are auto-imported by `vite-plugin-vuetify`). This is autofixable:
   `pnpm lint:eslint:fix`.
+- **Component names** follow `<Scope><Feature><Role>.vue`: `App*` for shell/global chrome,
+  `Page*` for cross-page page scaffolds, `<Domain>*` for page-private modules. Use role
+  suffixes (`Layout`, `Toolbar`, `Drawer`, `Menu`, `Toggle`, `Picker`, `Item`, `Divider`) and
+  avoid verbs/abbreviations (`UserFormDrawer`, `TabChromeBackground`).
 - **Semicolons required** — `semi: true` in `.oxfmtrc.json`.
 - **Imports sorted by group** — types → builtins → externals → `@/` internals → relative →
   side effects, with `newlinesBetween`, via `sortImports`. `internalPattern` includes
@@ -628,7 +632,7 @@ Notes:
 ├─ src/
 │  ├─ components/             # cross-page reusable components only
 │  │  ├─ advanced/            # generic primitives (page-tab/)
-│  │  └─ common/              # shared controls + TablePageLayout / TablePageActions
+│  │  └─ common/              # shared controls + PageTableLayout / PageTableToolbar
 │  ├─ composables/            # useAppLocale, useBreadcrumb, useFullscreen, useNavigation, usePageTitle, useTable
 │  ├─ layouts/                # BaseLayout, BlankLayout + modules/ (header, sider, tabs, theme-drawer)
 │  ├─ locales/                # app messages + merged Vuetify translations

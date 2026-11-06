@@ -170,16 +170,6 @@ export function isHexColor(value: unknown): value is string {
   return typeof value === 'string' && HEX_COLOR_PATTERN.test(value);
 }
 
-/** Whether a hex color is light enough to need a dark foreground on top of it. */
-export function isLightHexColor(hex: string): boolean {
-  const red = Number.parseInt(hex.slice(1, 3), 16);
-  const green = Number.parseInt(hex.slice(3, 5), 16);
-  const blue = Number.parseInt(hex.slice(5, 7), 16);
-  const luma = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
-
-  return luma > 0.6;
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }

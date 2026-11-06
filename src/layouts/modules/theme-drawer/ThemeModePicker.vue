@@ -4,7 +4,7 @@ import type { ThemeMode } from '@/typings/theme';
 import { computed } from 'vue';
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
+import SettingsDivider from '@/layouts/modules/theme-drawer/SettingsDivider.vue';
 import { useThemeStore } from '@/stores/theme';
 import { isThemeMode } from '@/theme/appearance';
 
@@ -32,7 +32,7 @@ function onModeChange(value: unknown) {
 
 <template>
   <section>
-    <SettingDivider :title="t('theme.mode')"></SettingDivider>
+    <SettingsDivider :title="t('theme.mode')"></SettingsDivider>
     <VTabs
       class="shadow-none mx-16"
       density="compact"

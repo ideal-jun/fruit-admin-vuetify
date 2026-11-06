@@ -7,8 +7,8 @@ import AppLocaleMenu from '@/components/common/AppLocaleMenu.vue';
 import AppThemeToggle from '@/components/common/AppThemeToggle.vue';
 import AppBreadcrumb from '@/layouts/modules/header/AppBreadcrumb.vue';
 import AppFullscreenToggle from '@/layouts/modules/header/AppFullscreenToggle.vue';
-import AppMenuToggler from '@/layouts/modules/header/AppMenuToggler.vue';
-import AppSearch from '@/layouts/modules/header/AppSearch.vue';
+import AppGlobalSearch from '@/layouts/modules/header/AppGlobalSearch.vue';
+import AppMenuToggle from '@/layouts/modules/header/AppMenuToggle.vue';
 import AppUserMenu from '@/layouts/modules/header/AppUserMenu.vue';
 import AppTabs from '@/layouts/modules/tabs/AppTabs.vue';
 import { useThemeStore } from '@/stores/theme';
@@ -83,7 +83,7 @@ function onToggleMenu() {
     :height="appBarHeight"
   >
     <template v-if="!fullContent">
-      <AppMenuToggler :mobile="mobile" :rail="rail" @toggle="onToggleMenu" />
+      <AppMenuToggle :mobile="mobile" :rail="rail" @toggle="onToggleMenu" />
 
       <AppBreadcrumb
         :show-icon="themeStore.header.breadcrumb.showIcon"
@@ -92,7 +92,7 @@ function onToggleMenu() {
 
       <VSpacer />
 
-      <AppSearch v-if="themeStore.header.searchVisible" />
+      <AppGlobalSearch v-if="themeStore.header.searchVisible" />
       <AppFullscreenToggle v-if="!mobile" />
       <AppLocaleMenu v-if="themeStore.header.localeVisible" />
       <AppThemeToggle />

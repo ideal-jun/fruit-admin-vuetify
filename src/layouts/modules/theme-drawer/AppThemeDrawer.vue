@@ -2,11 +2,11 @@
 import { computed, shallowRef } from 'vue';
 import { useDisplay, useLocale } from 'vuetify';
 
-import ConfigOperation from '@/layouts/modules/theme-drawer/ConfigOperation.vue';
 import AppearanceSettings from '@/layouts/modules/theme-drawer/sections/AppearanceSettings.vue';
 import GeneralSettings from '@/layouts/modules/theme-drawer/sections/GeneralSettings.vue';
 import LayoutSettings from '@/layouts/modules/theme-drawer/sections/LayoutSettings.vue';
 import PresetSettings from '@/layouts/modules/theme-drawer/sections/PresetSettings.vue';
+import ThemeConfigActions from '@/layouts/modules/theme-drawer/ThemeConfigActions.vue';
 
 type ThemeDrawerTab = 'appearance' | 'layout' | 'general' | 'preset';
 
@@ -98,7 +98,7 @@ function onTabChange(value: unknown) {
 
     <template #append>
       <VDivider />
-      <ConfigOperation />
+      <ThemeConfigActions />
     </template>
   </VNavigationDrawer>
 </template>

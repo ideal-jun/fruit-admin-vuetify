@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useId } from 'vue';
 
-defineOptions({ name: 'ChromeTabBg' });
+defineOptions({ name: 'TabChromeBackground' });
 
 const symbolId = `page-tab-chrome-${useId()}`;
 </script>

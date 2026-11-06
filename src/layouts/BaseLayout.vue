@@ -9,7 +9,7 @@ import {
   VScrollYTransition,
 } from 'vuetify/components';
 
-import Watermark from '@/components/common/Watermark.vue';
+import AppWatermark from '@/components/common/AppWatermark.vue';
 import AppHeader from '@/layouts/modules/header/AppHeader.vue';
 import AppSidebar from '@/layouts/modules/sider/AppSidebar.vue';
 import AppThemeDrawer from '@/layouts/modules/theme-drawer/AppThemeDrawer.vue';
@@ -173,7 +173,7 @@ onBeforeUnmount(() => {
     </VContainer>
   </VMain>
   <AppThemeDrawer v-model:open="themeDrawerOpen" />
-  <Watermark
+  <AppWatermark
     v-if="themeStore.watermark.visible"
     :enable-time="themeStore.watermark.enableTime"
     :enable-username="themeStore.watermark.enableUserName"

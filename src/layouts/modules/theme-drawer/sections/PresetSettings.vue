@@ -4,7 +4,7 @@ import type { ThemeMode, ThemePresetDefinition } from '@/typings/theme';
 import { computed, shallowRef } from 'vue';
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
+import SettingsDivider from '@/layouts/modules/theme-drawer/SettingsDivider.vue';
 import { useThemeStore } from '@/stores/theme';
 import { THEME_PRESETS } from '@/theme/presets';
 
@@ -47,7 +47,7 @@ function applyPreset(preset: ThemePresetDefinition) {
 
 <template>
   <div class="flex flex-col gap-4">
-    <SettingDivider :title="t('theme.preset.title')" />
+    <SettingsDivider :title="t('theme.preset.title')" />
 
     <div class="flex flex-col gap-3">
       <VCard

@@ -4,8 +4,8 @@ import type { PageAnimateMode, TabMode } from '@/typings/theme';
 import { computed } from 'vue';
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
-import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
+import SettingsDivider from '@/layouts/modules/theme-drawer/SettingsDivider.vue';
+import SettingsItem from '@/layouts/modules/theme-drawer/SettingsItem.vue';
 import { useThemeStore } from '@/stores/theme';
 import { isPageAnimateMode, isTabMode } from '@/theme/appearance';
 
@@ -112,10 +112,10 @@ function setSiderCollapsedWidth(value: number | null) {
 
 <template>
   <div class="flex flex-col gap-4">
-    <SettingDivider :title="t('theme.layout.title')" />
+    <SettingsDivider :title="t('theme.layout.title')" />
 
     <div class="flex flex-col gap-3">
-      <SettingItem :label="t('theme.layout.tabVisible')">
+      <SettingsItem :label="t('theme.layout.tabVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -123,10 +123,10 @@ function setSiderCollapsedWidth(value: number | null) {
           :model-value="themeStore.tab.visible"
           @update:model-value="setTabVisible"
         />
-      </SettingItem>
+      </SettingsItem>
 
       <template v-if="themeStore.tab.visible">
-        <SettingItem :label="t('theme.layout.tabCache')">
+        <SettingsItem :label="t('theme.layout.tabCache')">
           <VSwitch
             color="primary"
             density="compact"
@@ -134,9 +134,9 @@ function setSiderCollapsedWidth(value: number | null) {
             :model-value="themeStore.tab.cache"
             @update:model-value="setTabCache"
           />
-        </SettingItem>
+        </SettingsItem>
 
-        <SettingItem :label="t('theme.layout.tabHeight')">
+        <SettingsItem :label="t('theme.layout.tabHeight')">
           <VNumberInput
             control-variant="stacked"
             density="compact"
@@ -149,9 +149,9 @@ function setSiderCollapsedWidth(value: number | null) {
             variant="outlined"
             @update:model-value="setTabHeight"
           />
-        </SettingItem>
+        </SettingsItem>
 
-        <SettingItem :label="t('theme.layout.tabStyle')">
+        <SettingsItem :label="t('theme.layout.tabStyle')">
           <VSelect
             density="compact"
             hide-details
@@ -163,9 +163,9 @@ function setSiderCollapsedWidth(value: number | null) {
             variant="outlined"
             @update:model-value="setTabMode"
           />
-        </SettingItem>
+        </SettingsItem>
 
-        <SettingItem :label="t('theme.layout.closeTabByMiddleClick')">
+        <SettingsItem :label="t('theme.layout.closeTabByMiddleClick')">
           <VSwitch
             color="primary"
             density="compact"
@@ -173,14 +173,14 @@ function setSiderCollapsedWidth(value: number | null) {
             :model-value="themeStore.tab.closeTabByMiddleClick"
             @update:model-value="setCloseTabByMiddleClick"
           />
-        </SettingItem>
+        </SettingsItem>
       </template>
     </div>
 
-    <SettingDivider :title="t('theme.layout.pageTitle')" />
+    <SettingsDivider :title="t('theme.layout.pageTitle')" />
 
     <div class="flex flex-col gap-3">
-      <SettingItem :label="t('theme.layout.pageAnimate')">
+      <SettingsItem :label="t('theme.layout.pageAnimate')">
         <VSwitch
           color="primary"
           density="compact"
@@ -188,9 +188,9 @@ function setSiderCollapsedWidth(value: number | null) {
           :model-value="themeStore.page.animate"
           @update:model-value="setPageAnimate"
         />
-      </SettingItem>
+      </SettingsItem>
 
-      <SettingItem v-if="themeStore.page.animate" :label="t('theme.layout.pageAnimateMode')">
+      <SettingsItem v-if="themeStore.page.animate" :label="t('theme.layout.pageAnimateMode')">
         <VSelect
           density="compact"
           hide-details
@@ -202,13 +202,13 @@ function setSiderCollapsedWidth(value: number | null) {
           variant="outlined"
           @update:model-value="setPageAnimateMode"
         />
-      </SettingItem>
+      </SettingsItem>
     </div>
 
-    <SettingDivider :title="t('theme.layout.headerTitle')" />
+    <SettingsDivider :title="t('theme.layout.headerTitle')" />
 
     <div class="flex flex-col gap-3">
-      <SettingItem :label="t('theme.layout.headerHeight')">
+      <SettingsItem :label="t('theme.layout.headerHeight')">
         <VNumberInput
           control-variant="stacked"
           density="compact"
@@ -221,9 +221,9 @@ function setSiderCollapsedWidth(value: number | null) {
           variant="outlined"
           @update:model-value="setHeaderHeight"
         />
-      </SettingItem>
+      </SettingsItem>
 
-      <SettingItem :label="t('theme.layout.breadcrumbVisible')">
+      <SettingsItem :label="t('theme.layout.breadcrumbVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -231,9 +231,9 @@ function setSiderCollapsedWidth(value: number | null) {
           :model-value="themeStore.header.breadcrumb.visible"
           @update:model-value="setBreadcrumbVisible"
         />
-      </SettingItem>
+      </SettingsItem>
 
-      <SettingItem v-if="showBreadcrumbIcon" :label="t('theme.layout.breadcrumbShowIcon')">
+      <SettingsItem v-if="showBreadcrumbIcon" :label="t('theme.layout.breadcrumbShowIcon')">
         <VSwitch
           color="primary"
           density="compact"
@@ -241,13 +241,13 @@ function setSiderCollapsedWidth(value: number | null) {
           :model-value="themeStore.header.breadcrumb.showIcon"
           @update:model-value="setBreadcrumbShowIcon"
         />
-      </SettingItem>
+      </SettingsItem>
     </div>
 
-    <SettingDivider :title="t('theme.layout.siderTitle')" />
+    <SettingsDivider :title="t('theme.layout.siderTitle')" />
 
     <div class="flex flex-col gap-3">
-      <SettingItem :label="t('theme.layout.siderWidth')">
+      <SettingsItem :label="t('theme.layout.siderWidth')">
         <VNumberInput
           control-variant="stacked"
           density="compact"
@@ -260,9 +260,9 @@ function setSiderCollapsedWidth(value: number | null) {
           variant="outlined"
           @update:model-value="setSiderWidth"
         />
-      </SettingItem>
+      </SettingsItem>
 
-      <SettingItem :label="t('theme.layout.siderCollapsedWidth')">
+      <SettingsItem :label="t('theme.layout.siderCollapsedWidth')">
         <VNumberInput
           control-variant="stacked"
           density="compact"
@@ -275,7 +275,7 @@ function setSiderCollapsedWidth(value: number | null) {
           variant="outlined"
           @update:model-value="setSiderCollapsedWidth"
         />
-      </SettingItem>
+      </SettingsItem>
     </div>
   </div>
 </template>

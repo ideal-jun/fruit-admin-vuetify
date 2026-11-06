@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useLocale } from 'vuetify';
 
-import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
+import SettingsItem from '@/layouts/modules/theme-drawer/SettingsItem.vue';
 import ThemeColorPicker from '@/layouts/modules/theme-drawer/ThemeColorPicker.vue';
 import ThemeModePicker from '@/layouts/modules/theme-drawer/ThemeModePicker.vue';
 import { useThemeStore } from '@/stores/theme';
@@ -33,7 +33,7 @@ function onColourWeaknessChange(value: unknown) {
     <ThemeModePicker />
     <ThemeColorPicker />
 
-    <SettingItem :label="t('theme.appearance.radius')">
+    <SettingsItem :label="t('theme.appearance.radius')">
       <VNumberInput
         control-variant="stacked"
         density="compact"
@@ -46,9 +46,9 @@ function onColourWeaknessChange(value: unknown) {
         variant="outlined"
         @update:model-value="onRadiusChange"
       />
-    </SettingItem>
+    </SettingsItem>
 
-    <SettingItem :label="t('theme.appearance.grayscale')">
+    <SettingsItem :label="t('theme.appearance.grayscale')">
       <VSwitch
         color="primary"
         density="compact"
@@ -56,9 +56,9 @@ function onColourWeaknessChange(value: unknown) {
         :model-value="themeStore.grayscale"
         @update:model-value="onGrayscaleChange"
       />
-    </SettingItem>
+    </SettingsItem>
 
-    <SettingItem :label="t('theme.appearance.colourWeakness')">
+    <SettingsItem :label="t('theme.appearance.colourWeakness')">
       <VSwitch
         color="primary"
         density="compact"
@@ -66,6 +66,6 @@ function onColourWeaknessChange(value: unknown) {
         :model-value="themeStore.colourWeakness"
         @update:model-value="onColourWeaknessChange"
       />
-    </SettingItem>
+    </SettingsItem>
   </div>
 </template>

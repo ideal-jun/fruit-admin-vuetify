@@ -6,8 +6,8 @@ import { computed } from 'vue';
 
 import { DEFAULT_PRIMARY_COLOR } from '@/theme/appearance';
 
-import ChromeTabBg from './ChromeTabBg.vue';
 import { createTabCssVars } from './pageTabStyles';
+import TabChromeBackground from './TabChromeBackground.vue';
 
 defineOptions({ name: 'PageTab', inheritAttrs: false });
 
@@ -64,7 +64,7 @@ const cssVars = computed<PageTabCssVars>(() => createTabCssVars(activeColor));
     @contextmenu.prevent="emit('open-menu', $event)"
     @mousedown.middle="emit('middle-click', $event)"
   >
-    <ChromeTabBg v-if="mode === 'chrome'" class="page-tab__bg" />
+    <TabChromeBackground v-if="mode === 'chrome'" class="page-tab__bg" />
 
     <!--
       The visual content is painted below this transparent real button. Keeping the

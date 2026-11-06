@@ -6,15 +6,15 @@ import type { DataTableHeader } from 'vuetify';
 import { computed, ref, shallowRef, watch } from 'vue';
 import { useLocale } from 'vuetify';
 
-import TablePageActions from '@/components/common/TablePageActions.vue';
-import TablePageLayout from '@/components/common/TablePageLayout.vue';
+import PageTableLayout from '@/components/common/PageTableLayout.vue';
+import PageTableToolbar from '@/components/common/PageTableToolbar.vue';
 import { useTable, useTableOperate } from '@/composables/useTable';
 import {
   createInitialUsers,
   createUserSearchParams,
   getUserRoleLabelKey,
 } from '@/views/users/modules/userData';
-import UserOperateDrawer from '@/views/users/modules/UserOperateDrawer.vue';
+import UserFormDrawer from '@/views/users/modules/UserFormDrawer.vue';
 import UserSearch from '@/views/users/modules/UserSearch.vue';
 
 defineOptions({ name: 'UsersView' });
@@ -309,13 +309,13 @@ async function confirmDelete() {
 </script>
 
 <template>
-  <TablePageLayout :title="t('views.users.title')">
+  <PageTableLayout :title="t('views.users.title')">
     <template #search>
       <UserSearch v-model:model="searchModel" @reset="resetSearch" @search="applySearch" />
     </template>
 
     <template #actions>
-      <TablePageActions
+      <PageTableToolbar
         :column-checks="columnChecks"
         :delete-disabled="checkedRowKeys.length === 0"
         :loading="loading"
@@ -376,7 +376,7 @@ async function confirmDelete() {
     </VDataTable>
 
     <template #modals>
-      <UserOperateDrawer
+      <UserFormDrawer
         v-model:visible="drawerVisible"
         :operate-type="operateType"
         :user="editingData"
@@ -401,5 +401,5 @@ async function confirmDelete() {
 
       <VSnackbar v-model="snackbarOpen" :text="snackbarText" timeout="2000" />
     </template>
-  </TablePageLayout>
+  </PageTableLayout>
 </template>

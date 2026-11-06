@@ -2,8 +2,8 @@
 import { computed } from 'vue';
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
-import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
+import SettingsDivider from '@/layouts/modules/theme-drawer/SettingsDivider.vue';
+import SettingsItem from '@/layouts/modules/theme-drawer/SettingsItem.vue';
 import { useThemeStore } from '@/stores/theme';
 import { isWatermarkTimeFormat, WATERMARK_TIME_FORMATS } from '@/theme/appearance';
 
@@ -82,10 +82,10 @@ function setWatermarkTimeFormat(value: unknown) {
 
 <template>
   <div class="flex flex-col gap-4">
-    <SettingDivider :title="t('theme.general.title')" />
+    <SettingsDivider :title="t('theme.general.title')" />
 
     <div class="flex flex-col gap-3">
-      <SettingItem :label="t('theme.general.searchVisible')">
+      <SettingsItem :label="t('theme.general.searchVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -93,9 +93,9 @@ function setWatermarkTimeFormat(value: unknown) {
           :model-value="themeStore.header.searchVisible"
           @update:model-value="setSearchVisible"
         />
-      </SettingItem>
+      </SettingsItem>
 
-      <SettingItem :label="t('theme.general.localeVisible')">
+      <SettingsItem :label="t('theme.general.localeVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -103,13 +103,13 @@ function setWatermarkTimeFormat(value: unknown) {
           :model-value="themeStore.header.localeVisible"
           @update:model-value="setLocaleVisible"
         />
-      </SettingItem>
+      </SettingsItem>
     </div>
 
-    <SettingDivider :title="t('theme.general.watermarkTitle')" />
+    <SettingsDivider :title="t('theme.general.watermarkTitle')" />
 
     <div class="flex flex-col gap-3">
-      <SettingItem :label="t('theme.general.watermarkVisible')">
+      <SettingsItem :label="t('theme.general.watermarkVisible')">
         <VSwitch
           color="primary"
           density="compact"
@@ -117,10 +117,10 @@ function setWatermarkTimeFormat(value: unknown) {
           :model-value="themeStore.watermark.visible"
           @update:model-value="setWatermarkVisible"
         />
-      </SettingItem>
+      </SettingsItem>
 
       <template v-if="themeStore.watermark.visible">
-        <SettingItem :label="t('theme.general.watermarkUserName')">
+        <SettingsItem :label="t('theme.general.watermarkUserName')">
           <VSwitch
             color="primary"
             density="compact"
@@ -128,9 +128,9 @@ function setWatermarkTimeFormat(value: unknown) {
             :model-value="themeStore.watermark.enableUserName"
             @update:model-value="setWatermarkUsername"
           />
-        </SettingItem>
+        </SettingsItem>
 
-        <SettingItem :label="t('theme.general.watermarkTime')">
+        <SettingsItem :label="t('theme.general.watermarkTime')">
           <VSwitch
             color="primary"
             density="compact"
@@ -138,9 +138,12 @@ function setWatermarkTimeFormat(value: unknown) {
             :model-value="themeStore.watermark.enableTime"
             @update:model-value="setWatermarkTime"
           />
-        </SettingItem>
+        </SettingsItem>
 
-        <SettingItem v-if="showWatermarkTimeFormat" :label="t('theme.general.watermarkTimeFormat')">
+        <SettingsItem
+          v-if="showWatermarkTimeFormat"
+          :label="t('theme.general.watermarkTimeFormat')"
+        >
           <VSelect
             density="compact"
             hide-details
@@ -152,9 +155,9 @@ function setWatermarkTimeFormat(value: unknown) {
             variant="outlined"
             @update:model-value="setWatermarkTimeFormat"
           />
-        </SettingItem>
+        </SettingsItem>
 
-        <SettingItem v-if="showWatermarkText" :label="t('theme.general.watermarkText')">
+        <SettingsItem v-if="showWatermarkText" :label="t('theme.general.watermarkText')">
           <VTextField
             density="compact"
             hide-details
@@ -163,7 +166,7 @@ function setWatermarkTimeFormat(value: unknown) {
             variant="outlined"
             @update:model-value="setWatermarkText"
           />
-        </SettingItem>
+        </SettingsItem>
       </template>
     </div>
   </div>
