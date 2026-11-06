@@ -10,6 +10,8 @@
   $color-pack: false,
   $utilities: false,
 
+  // VDefaultsProvider (App.vue) applies the runtime radius to components with a rounded
+  // prop; this keeps the compiled fallback in the same 8px scale.
   $heading-font-family: var(--font-heading),
   $body-font-family: var(--font-body),
 

@@ -118,9 +118,11 @@ const items = computed(() => {
         autocomplete="off"
         clearable
         color="primary"
+        density="comfortable"
         hide-details
         :placeholder="t('layout.searchPlaceholder')"
         prepend-inner-icon="$search"
+        variant="filled"
       ></VTextField>
     </template>
     <!-- Empty query shows a prompt; only an actual miss shows the "no results" message. -->

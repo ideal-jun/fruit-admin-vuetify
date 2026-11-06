@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useLocale } from 'vuetify';
 
-import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
 import SettingItem from '@/layouts/modules/theme-drawer/SettingItem.vue';
 import ThemeColorPicker from '@/layouts/modules/theme-drawer/ThemeColorPicker.vue';
 import ThemeModePicker from '@/layouts/modules/theme-drawer/ThemeModePicker.vue';
@@ -31,8 +30,6 @@ function onColourWeaknessChange(value: unknown) {
 
 <template>
   <div class="flex flex-col gap-4">
-    <SettingDivider :title="t('theme.appearance.title')" />
-
     <ThemeModePicker />
     <ThemeColorPicker />
 

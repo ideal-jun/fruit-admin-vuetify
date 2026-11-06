@@ -43,7 +43,7 @@ function reset() {
 </script>
 
 <template>
-  <VSheet elevation="1" rounded="lg">
+  <VSheet elevation="1">
     <VExpansionPanels v-model="openPanels" elevation="0" :hover="false" static>
       <VExpansionPanel :ripple="false" value="search">
         <VExpansionPanelTitle>{{ t('views.users.search') }}</VExpansionPanelTitle>

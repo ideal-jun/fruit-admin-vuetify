@@ -67,43 +67,51 @@ const shadowPreflight = {
   },
 };
 
+// Recreated Vuetify radius utilities for the default 8px root (sm 4 / base 8 / lg 16 /
+// xl 48). Global runtime radius for components is handled by VDefaultsProvider in App.vue;
+// explicit rounded-* utilities keep these fixed Vuetify scale values.
+const RADIUS_ROOT = '8px';
+const RADIUS_SM = '4px';
+const RADIUS_LG = '16px';
+const RADIUS_XL = '48px';
+
 const roundedShortcuts = {
   'rounded-0': 'rounded-none',
-  'rounded-sm': 'rounded-[2px]',
-  rounded: 'rounded-[4px]',
-  'rounded-lg': 'rounded-[8px]',
-  'rounded-xl': 'rounded-[24px]',
+  'rounded-sm': `rounded-[${RADIUS_SM}]`,
+  rounded: `rounded-[${RADIUS_ROOT}]`,
+  'rounded-lg': `rounded-[${RADIUS_LG}]`,
+  'rounded-xl': `rounded-[${RADIUS_XL}]`,
   'rounded-pill': 'rounded-full',
   'rounded-circle': 'rounded-[50%]',
-  'rounded-shaped': 'rounded-[24px_0]',
+  'rounded-shaped': `rounded-[${RADIUS_XL}_0]`,
 
   // directional variants
   'rounded-t-0': 'rounded-t-none',
-  'rounded-t-sm': 'rounded-tl-[2px] rounded-tr-[2px]',
-  'rounded-t': 'rounded-tl-[4px] rounded-tr-[4px]',
-  'rounded-t-lg': 'rounded-tl-[8px] rounded-tr-[8px]',
-  'rounded-t-xl': 'rounded-tl-[24px] rounded-tr-[24px]',
+  'rounded-t-sm': `rounded-tl-[${RADIUS_SM}] rounded-tr-[${RADIUS_SM}]`,
+  'rounded-t': `rounded-tl-[${RADIUS_ROOT}] rounded-tr-[${RADIUS_ROOT}]`,
+  'rounded-t-lg': `rounded-tl-[${RADIUS_LG}] rounded-tr-[${RADIUS_LG}]`,
+  'rounded-t-xl': `rounded-tl-[${RADIUS_XL}] rounded-tr-[${RADIUS_XL}]`,
   'rounded-t-pill': 'rounded-tl-full rounded-tr-full',
 
   'rounded-b-0': 'rounded-b-none',
-  'rounded-b-sm': 'rounded-bl-[2px] rounded-br-[2px]',
-  'rounded-b': 'rounded-bl-[4px] rounded-br-[4px]',
-  'rounded-b-lg': 'rounded-bl-[8px] rounded-br-[8px]',
-  'rounded-b-xl': 'rounded-bl-[24px] rounded-br-[24px]',
+  'rounded-b-sm': `rounded-bl-[${RADIUS_SM}] rounded-br-[${RADIUS_SM}]`,
+  'rounded-b': `rounded-bl-[${RADIUS_ROOT}] rounded-br-[${RADIUS_ROOT}]`,
+  'rounded-b-lg': `rounded-bl-[${RADIUS_LG}] rounded-br-[${RADIUS_LG}]`,
+  'rounded-b-xl': `rounded-bl-[${RADIUS_XL}] rounded-br-[${RADIUS_XL}]`,
   'rounded-b-pill': 'rounded-bl-full rounded-br-full',
 
   'rounded-s-0': 'rounded-ss-none rounded-es-none',
-  'rounded-s-sm': 'rounded-ss-[2px] rounded-es-[2px]',
-  'rounded-s': 'rounded-ss-[4px] rounded-es-[4px]',
-  'rounded-s-lg': 'rounded-ss-[8px] rounded-es-[8px]',
-  'rounded-s-xl': 'rounded-ss-[24px] rounded-es-[24px]',
+  'rounded-s-sm': `rounded-ss-[${RADIUS_SM}] rounded-es-[${RADIUS_SM}]`,
+  'rounded-s': `rounded-ss-[${RADIUS_ROOT}] rounded-es-[${RADIUS_ROOT}]`,
+  'rounded-s-lg': `rounded-ss-[${RADIUS_LG}] rounded-es-[${RADIUS_LG}]`,
+  'rounded-s-xl': `rounded-ss-[${RADIUS_XL}] rounded-es-[${RADIUS_XL}]`,
   'rounded-s-pill': 'rounded-ss-full rounded-es-full',
 
   'rounded-e-0': 'rounded-se-none rounded-ee-none',
-  'rounded-e-sm': 'rounded-se-[2px] rounded-ee-[2px]',
-  'rounded-e': 'rounded-se-[4px] rounded-ee-[4px]',
-  'rounded-e-lg': 'rounded-se-[8px] rounded-ee-[8px]',
-  'rounded-e-xl': 'rounded-se-[24px] rounded-ee-[24px]',
+  'rounded-e-sm': `rounded-se-[${RADIUS_SM}] rounded-ee-[${RADIUS_SM}]`,
+  'rounded-e': `rounded-se-[${RADIUS_ROOT}] rounded-ee-[${RADIUS_ROOT}]`,
+  'rounded-e-lg': `rounded-se-[${RADIUS_LG}] rounded-ee-[${RADIUS_LG}]`,
+  'rounded-e-xl': `rounded-se-[${RADIUS_XL}] rounded-ee-[${RADIUS_XL}]`,
   'rounded-e-pill': 'rounded-se-full rounded-ee-full',
 };
 

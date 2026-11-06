@@ -27,7 +27,7 @@ function signOut() {
 
   <VMenu v-else location="bottom end">
     <template #activator="{ props }">
-      <VBtn v-bind="props" rounded="lg" variant="text">
+      <VBtn v-bind="props" variant="text">
         <template #prepend>
           <VAvatar color="primary" size="24">
             <span class="text-label-large">{{ auth.initials }}</span>

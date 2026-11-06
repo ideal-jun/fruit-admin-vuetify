@@ -4,6 +4,7 @@ import type { ThemeMode } from '@/typings/theme';
 import { computed } from 'vue';
 import { useLocale } from 'vuetify';
 
+import SettingDivider from '@/layouts/modules/theme-drawer/SettingDivider.vue';
 import { useThemeStore } from '@/stores/theme';
 import { isThemeMode } from '@/theme/appearance';
 
@@ -18,8 +19,8 @@ const themeStore = useThemeStore();
 
 const options = computed<ModeOption[]>(() => [
   { value: 'light', icon: 'mdi-white-balance-sunny', label: t('theme.modeLight') },
+  { value: 'system', icon: 'mdi-brightness-auto', label: t('theme.modeSystem') },
   { value: 'dark', icon: 'mdi-weather-night', label: t('theme.modeDark') },
-  { value: 'system', icon: 'mdi-theme-light-dark', label: t('theme.modeSystem') },
 ]);
 
 function onModeChange(value: unknown) {
@@ -31,9 +32,9 @@ function onModeChange(value: unknown) {
 
 <template>
   <section>
-    <div class="mb-2 text-label-large text-medium-emphasis">{{ t('theme.mode') }}</div>
-
+    <SettingDivider :title="t('theme.mode')"></SettingDivider>
     <VTabs
+      class="shadow-none mx-16"
       density="compact"
       grow
       inset
@@ -45,6 +46,8 @@ function onModeChange(value: unknown) {
         v-for="option in options"
         :key="option.value"
         :aria-label="option.label"
+        min-width="30"
+        :ripple="false"
         :value="option.value"
       >
         <VIcon :icon="option.icon" size="20" />

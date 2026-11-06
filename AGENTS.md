@@ -114,11 +114,14 @@ with `<component :is>` and do not add `meta.layout`.
   the view remounts. Closing a tab purges its view from the KeepAlive cache through
   `useRouteStore().resetRouteCache()`.
 - Appearance settings live in `src/stores/theme.ts`: `mode` (`light` / `dark` / `system`),
-  `primary` and the routed-view animation (`page.animate` / `page.animateMode`), persisted
-  under `fruit-admin.appearance`. Mutating the Vuetify theme updates
+  `primary`, `radius` and the routed-view animation (`page.animate` / `page.animateMode`),
+  persisted under `fruit-admin.appearance`. Mutating the Vuetify theme updates
   `rgb(var(--v-theme-primary))` — and therefore `bg-primary` / `text-primary` — at once.
-  Create the store in `App.vue` before the first render so the saved theme applies without
-  a flash.
+  Radius is applied by `VDefaultsProvider` in `App.vue` (`global.rounded` plus
+  intrinsic-shape exceptions and the 12px field cap); `VAppBar` and `VNavigationDrawer` are
+  pinned to 0 so the Vuetify layout roots stay flush. Explicit `rounded-*` utilities keep
+  the fixed 8px Vuetify scale. Create the store in `App.vue` before the first render so the
+  saved theme applies without a flash.
 - Demo auth lives in `src/stores/auth.ts` (`fruit-admin.user`): the login view signs in, the
   app-bar user menu signs out. There are no route guards yet.
 - **`BlankLayout`** (parent of full-screen views) = full-screen `VMain` with
@@ -226,6 +229,10 @@ app and every Vuetify component.
   They follow runtime theme changes (the appearance drawer writes
   `theme.themes.value.*.colors.primary`). Dark mode uses Vuetify's theme selectors:
   `dark:bg-black` compiles to `.v-theme--dark .dark\\:bg-black`.
+- Radius follows the `VDefaultsProvider` global default in `App.vue`; `VAppBar` and
+  `VNavigationDrawer` are pinned to 0. Use `rounded-*` utilities (fixed 8px Vuetify scale)
+  instead of hard-coded `border-radius` values. Fields are capped at 12px in the provider's
+  per-component defaults to keep Vuetify's segmented outlined borders usable at large radii.
 - New CSS cascade layers must respect `public/layers.css` (UnoCSS sits between Vuetify core
   and `vuetify-final`).
 - Prefer UnoCSS utilities over `<style scoped>`; `@apply` is available via

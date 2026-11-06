@@ -10,8 +10,8 @@ import { useThemeStore } from '@/stores/theme';
 /** One icon per mode: light / dark / follow the OS. */
 const MODE_ICONS: Record<ThemeMode, string> = {
   light: 'mdi-white-balance-sunny',
+  system: 'mdi-brightness-auto',
   dark: 'mdi-weather-night',
-  system: 'mdi-theme-light-dark',
 };
 
 const { t } = useLocale();

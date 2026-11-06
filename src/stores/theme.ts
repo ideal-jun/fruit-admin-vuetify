@@ -87,13 +87,6 @@ export const useThemeStore = defineStore('theme', () => {
     }
   }
 
-  /** The radius lives in Vuetify's theme variables, so both themes are updated. */
-  function applyRadius() {
-    for (const definition of Object.values(theme.themes.value)) {
-      definition.variables['border-radius-root'] = `${settings.value.radius}px`;
-    }
-  }
-
   function applyAuxiliaryModes() {
     if (typeof document === 'undefined') {
       return;
@@ -110,7 +103,6 @@ export const useThemeStore = defineStore('theme', () => {
   function applyAll() {
     applyMode();
     applyColors();
-    applyRadius();
     applyAuxiliaryModes();
   }
 

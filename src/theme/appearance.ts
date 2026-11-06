@@ -27,8 +27,8 @@ export const DEFAULT_PAGE_ANIMATE_MODE: PageAnimateMode = 'fade-slide';
 /** Vuetify's default light primary, applied to both themes so the app has one brand color. */
 export const DEFAULT_PRIMARY_COLOR = '#646CFF';
 
-/** Vuetify's default border radius root, in pixels. */
-export const DEFAULT_RADIUS = 4;
+/** Default border radius root, in pixels. */
+export const DEFAULT_RADIUS = 8;
 
 /** Height of the global tab bar (the reference tab height, matching the comfortable toolbar). */
 export const DEFAULT_TAB_HEIGHT = 40;

@@ -8,5 +8,5 @@ const { title } = defineProps<Props>();
 </script>
 
 <template>
-  <VDivider class="my-3 text-label-medium">{{ title }}</VDivider>
+  <VDivider class="my-8 text-label-medium">{{ title }}</VDivider>
 </template>

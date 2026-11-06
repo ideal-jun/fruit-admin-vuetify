@@ -50,7 +50,6 @@ const navItems = useNavigation();
         v-for="item in navItems"
         :key="item.to"
         :prepend-icon="item.icon"
-        rounded="lg"
         :title="item.title"
         :to="item.to"
       />

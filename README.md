@@ -172,8 +172,8 @@ Re-implemented as UnoCSS shortcuts / rules so they keep working (and gain respon
 prefixes such as `md:rounded-xl`):
 
 - `rounded-0 | -sm | (base) | -lg | -xl | -pill | -circle | -shaped` and the
-  `-t- / -b- / -s- / -e-` directional variants, matching Vuetify's radius scale
-  (2 / 4 / 8 / 24 px).
+  `-t- / -b- / -s- / -e-` directional variants, matching the 8px Vuetify radius scale
+  (4 / 8 / 16 / 48 px).
 - `elevation-0 … elevation-5`, mapped onto the TailwindCSS shadow scale —
   see [Elevation and shadows](#elevation-and-shadows).
 - `text-display-large … text-label-small` MD3 typography shortcuts.
@@ -455,6 +455,14 @@ persisted under `fruit-admin.tabs`.
 - The primary color is written to `theme.themes.value.{light,dark}.colors.primary`, so
   everything driven by `rgb(var(--v-theme-primary))` — Vuetify components and UnoCSS
   `bg-primary` / `text-primary` — updates at once.
+- Global component radius is applied through `VDefaultsProvider` in [App.vue](src/App.vue):
+  `defaults.global.rounded = themeStore.radius`. A numeric value becomes an inline
+  `border-radius`, so every component with a `rounded` prop follows the setting at once.
+  The Vuetify layout roots (`VAppBar` and `VNavigationDrawer`) are pinned to 0 so the shell
+  stays flush. Components whose shape is intrinsic keep their radius (avatar/chip/icon
+  button/badge/progress/slider), and inputs are capped at 12px so Vuetify's segmented
+  outlined border doesn't turn into a detached capsule. Explicit `rounded-*` utilities use
+  the fixed 8px Vuetify scale; the default radius is 8px.
 - Routed-view transitions are appearance settings too: `themeStore.page.animate` and
   `themeStore.page.animateMode` (`fade` / `fade-slide` / `fade-bottom` / `fade-scale`),
   persisted with the rest under `fruit-admin.appearance`.

@@ -22,7 +22,6 @@ const { icon, tooltip = '', loading = false } = defineProps<Props>();
         :aria-label="tooltip === '' ? icon : tooltip"
         :class="['text-medium-emphasis', { 'app-icon-button--loading': loading }]"
         :icon="icon"
-        rounded="lg"
         size="small"
         variant="text"
       />

@@ -64,7 +64,7 @@ function onTabChange(value: unknown) {
       </div>
 
       <VTabs
-        class="mx-4"
+        class="mx-4 shadow-none"
         density="compact"
         grow
         inset
@@ -78,7 +78,7 @@ function onTabChange(value: unknown) {
       </VTabs>
     </template>
 
-    <VTabsWindow class="p-4" :model-value="activeTab">
+    <VTabsWindow class="p-4" :model-value="activeTab" :transition-duration="200">
       <VTabsWindowItem value="appearance">
         <AppearanceSettings />
       </VTabsWindowItem>

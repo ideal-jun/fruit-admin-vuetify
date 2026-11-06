@@ -74,17 +74,11 @@ function resetSettings() {
 
 <template>
   <div class="flex w-full items-center justify-between gap-3 p-4">
-    <VBtn
-      color="error"
-      prepend-icon="mdi-restore"
-      size="small"
-      variant="outlined"
-      @click="resetSettings"
-    >
+    <VBtn color="error" prepend-icon="mdi-restore" variant="outlined" @click="resetSettings">
       {{ t('theme.config.reset') }}
     </VBtn>
 
-    <VBtn color="primary" prepend-icon="mdi-content-copy" size="small" @click="copySettings">
+    <VBtn color="primary" prepend-icon="mdi-content-copy" @click="copySettings">
       {{ t('theme.config.copy') }}
     </VBtn>
   </div>
