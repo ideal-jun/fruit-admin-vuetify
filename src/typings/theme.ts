@@ -139,5 +139,7 @@ export interface ThemePresetDefinition {
   readonly nameKey: string;
   /** i18n key of the preset description. */
   readonly descriptionKey: string;
+  /** Preset version shown as a chip. */
+  readonly version: string;
   readonly settings: ThemeSettingsPatch;
 }

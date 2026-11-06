@@ -4,16 +4,11 @@ import { useLocale } from 'vuetify';
 import SettingsItem from '@/layouts/modules/theme-drawer/SettingsItem.vue';
 import ThemeColorPicker from '@/layouts/modules/theme-drawer/ThemeColorPicker.vue';
 import ThemeModePicker from '@/layouts/modules/theme-drawer/ThemeModePicker.vue';
+import ThemeRadius from '@/layouts/modules/theme-drawer/ThemeRadius.vue';
 import { useThemeStore } from '@/stores/theme';
 
 const { t } = useLocale();
 const themeStore = useThemeStore();
-
-function onRadiusChange(value: number | null) {
-  if (value !== null && Number.isFinite(value)) {
-    themeStore.setRadius(Math.round(value));
-  }
-}
 
 function onGrayscaleChange(value: unknown) {
   if (typeof value === 'boolean') {
@@ -53,20 +48,6 @@ function onColourWeaknessChange(value: unknown) {
     </SettingsItem>
 
     <ThemeColorPicker />
-
-    <SettingsItem :label="t('theme.appearance.radius')">
-      <VNumberInput
-        control-variant="stacked"
-        density="compact"
-        hide-details
-        :max="16"
-        max-width="160"
-        :min="0"
-        :model-value="themeStore.radius"
-        :step="1"
-        variant="outlined"
-        @update:model-value="onRadiusChange"
-      />
-    </SettingsItem>
+    <ThemeRadius />
   </div>
 </template>

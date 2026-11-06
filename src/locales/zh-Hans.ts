@@ -69,6 +69,7 @@ const messages: AppMessages = {
     appearance: {
       title: '外观设置',
       recommendColor: '推荐色',
+      radiusTitle: '主题圆角',
       color: {
         title: '主题色',
         primary: '主色',

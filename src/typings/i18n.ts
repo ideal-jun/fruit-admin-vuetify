@@ -84,6 +84,7 @@ export interface AppMessages {
     appearance: {
       title: string;
       recommendColor: string;
+      radiusTitle: string;
       color: {
         title: string;
         primary: string;

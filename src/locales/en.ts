@@ -69,6 +69,7 @@ const messages: AppMessages = {
     appearance: {
       title: 'Appearance',
       recommendColor: 'Recommended color',
+      radiusTitle: 'Theme radius',
       color: {
         title: 'Theme colors',
         primary: 'Primary',
