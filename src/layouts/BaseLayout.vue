@@ -104,6 +104,7 @@ function openThemeDrawer() {
 
 function toggleFullContent() {
   fullContent.value = !fullContent.value;
+  drawerOpen.value = !fullContent.value;
 }
 
 /**
@@ -137,7 +138,6 @@ onBeforeUnmount(() => {
 
 <template>
   <AppSidebar
-    v-if="!fullContent"
     v-model="drawerOpen"
     :collapsed-width="themeStore.sider.collapsedWidth"
     :rail="sidebarRail"
